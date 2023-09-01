@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--=============== FAVICON ===============-->
+        <link rel="shortcut icon" href="resources/images/favicon.png" type="image/x-icon">
+
+        <!--=============== BOXICONS ===============-->
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+        <!--=============== SWIPER CSS ===============-->
+        <link rel="stylesheet" href="css/swiper-bundle.min.css">
+
+        <!--=============== CSS ===============-->
+        <link rel="stylesheet" href="css/styles.css">
+
+        <title>Teja's Portfolio </title>
+    </head>
+    <body id= "my-scrollbar">
+        <!--=============== Background ===============-->
+        <div class="area" >
+            <ul class="circles">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+            </ul>
+        </div >
+        <!--=============== HEADER ===============-->
+        <header class="header" id="header">
+            <nav class = "nav container">
+                <a href = "#" class="nav-logo">Teja</a>
+
+                <div class = "nav-menu">
+                     <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="#home" class="nav-link active-link">
+                                <i class='bx bx-home-alt-2' ></i>
+                            </a>
+                        </li> 
+                        <li class="nav-item">
+                            <a href="#about" class="nav-link">
+                                <i class='bx bx-user' ></i>
+                            </a> 
+                        </li>
+                        <li class="nav-item">
+                            <a href="#skills" class="nav-link">
+                                <i class='bx bxs-book-bookmark' ></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#portfolio" class="nav-link">
+                                <i class='bx bx-briefcase-alt' ></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#contact" class="nav-link">
+                                <i class='bx bx-message' ></i>
+                            </a>
+                        </li>
+                     </ul>
+                </div>
+                <i class='bx bx-moon change-theme' id = "theme-button"></i>
+                <!-- Theme change button  -->
+                
+            </nav>
+        </header>
+
+        <!--=============== MAIN ===============-->
+        <main class="main">
+            <!--=============== HOME ===============-->
+            <section class="home section" id="home">
+                <div class="home-container container grid">
+                    <div class="home-data">
+                        <span class="home-greeting">Hello, I'm </span>
+                        <h1 class="home-name">Teja Koduru</h1>
+                        <h3 class="home-education" id = "multiple-titles"></h3>
+                    
+                        <div class="home-buttons">
+                            <a download = "TKoduruResume.pdf" href="resources/files/TKoduruResume.pdf" class="button button--ghost">
+                                Download CV!
+                            </a>
+                            <a href="#about" class="button button--ghost">About me</a>
+                        </div>
+                    </div>
+
+                    <div class="home-handle">
+                        <img src="resources/images/HikingPFP.jpg" alt="" class="home-img">
+                    </div>
+
+                    <div class="home-social">
+                        <a href="https://www.linkedin.com/in/teja-koduru-44121622a/" target = "_blank" class="home-social-link">
+                            <i class='bx bxl-linkedin' ></i>
+                        </a> 
+                        <a href="https://www.facebook.com/teja.koduru.10" target = "_blank" class="home-social-link">
+                            <i class='bx bxl-facebook-circle' ></i>
+                        </a>
+                        <a href="https://www.instagram.com/te.ja09/" target = "_blank" class="home-social-link">
+                            <i class='bx bxl-instagram' ></i>
+                        </a>
+                        <a href="https://twitter.com/TJKoduru" target = "_blank" class="home-social-link">
+                            <i class='bx bxl-twitter'></i>
+                        </a>
+                        
+                    </div>
+
+                    <a href="#about" class="home-scroll">
+                        <i class='bx bx-mouse home-scroll-icon' ></i>
+                        <span class="home-scroll-name">Scroll down!</span>
+                    </a>
+                </div>
+            </section>
+            
+            <!--=============== ABOUT ===============-->
+            <section class="about section" id="about">
+                <span class="section-subtitle">About me</span>
+                <h2 class="section-title">So, who am I?</h2>
+
+                <div class="about-container container grid">
+                    <img src="resources/images/WashingtonPFP.jpg" alt="" class="about-img" data-tilt>
+                    
+                    <div class="about-data">
+                        <div class="about-info">
+                            <div class="about-box inner-card">
+                                <i class="bx bx-award about-icon"></i>
+                                <h3 class="about-title"> Experience </h3>
+                                <span class="about-subtitle">4 Years Working</span>
+                            </div>
+                            
+                            <div class="about-box inner-card">
+                                <i class="bx bx-briefcase-alt about-icon"></i>
+                                <h3 class="about-title">Completed</h3>
+                                <span class="about-subtitle">20+ Projects</span>
+                            </div>
+
+                            <div class="about-box inner-card">
+                                <i class='bx bxs-brain about-icon' ></i>
+                                <h3 class="about-title">Knowledge</h3>
+                                <span class="about-subtitle">Always improving!</span>
+                            </div>
+                        </div>
+                        
+                        <p class="about-description" id = "courses-top">
+                            Hey! My name's Teja - I'm currently studying</p>
+                        <span id = "multiple-courses"></span>
+                        <p class="about-description">
+                            at the University of Michigan. But, as you may be able to tell, I also
+                            dabble in web dev, manufacturing, AI, and a bunch of other things. 
+                            I'm a jack of all trades, and I'm always looking for new things to learn.
+                            So: What can I do to help you?
+                        </p>
+
+                        <a href = "#contact" class = "button">Reach out!</a>
+
+                    </div>
+                </div>
+            </section>
+
+            <!--=============== SKILLS ===============-->
+            <section class="skills section" id="skills">
+                <span class="section-subtitle">Skills and Education</span>
+                <h2 class="section-title">Take a look through!</h2>
+
+                <div class="skills-container container swiper">
+                    <div class="swiper-wrapper">
+                        <div class="skills-content swiper-slide" id = "programming-skills">
+                            <h3 class="skills-title">Computer Science Skills</h3>                   
+                            <div class="skills-box">
+                                <div class="skills-group">
+                                    <div class="skills-data">
+                                        <i class='bx bxl-java skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">Java</h3>
+                                            <span class="skills-level">Intermediate</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bxl-python skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">Python</h3>
+                                            <span class="skills-level">Advanced</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bxl-c-plus-plus skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">C++</h3>
+                                            <span class="skills-level">Intermediate</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="skills-group">
+                                    <div class="skills-data">
+                                        <i class='bx bx-hash skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">C#</h3>
+                                            <span class="skills-level">Intermediate</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bx-signal-5 skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">Matlab</h3>
+                                            <span class="skills-level">Beginner</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bxl-html5 skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">HTML/CSS/JS</h3>
+                                            <span class="skills-level">Beginner</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="skills-content swiper-slide" id = "engineering-skills">
+                            <h3 class="skills-title">Engineering Skills</h3>
+                        
+                            <div class="skills-box">
+                                <div class="skills-group">
+                                    <div class="skills-data">
+                                        <i class='bx bx-check-shield skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">Fusion 360</h3>
+                                            <span class="skills-level">Intermediate</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bx-check-shield skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">Inventor 2023</h3>
+                                            <span class="skills-level">Intermediate</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bx-check-shield skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">3D Printing</h3>
+                                            <span class="skills-level">Intermediate</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="skills-group">
+                                    <div class="skills-data">
+                                        <i class='bx bx-check-shield skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">ANSYS</h3>
+                                            <span class="skills-level">Beginner</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bx-check-shield skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">Shop Skills</h3>
+                                            <span class="skills-level">Advanced</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bx-check-shield skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">CircuitMaker</h3>
+                                            <span class="skills-level">Intermediate</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                        </div>
+
+                        <div class="skills-content swiper-slide" id = "education">
+                            <h3 class="skills-title">Education & Notable Classes</h3>
+                        
+                            <div class="skills-box">
+                                <div class="skills-group">
+                                    <div class="skills-data">
+                                        <i class='bx bxs-book-content skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">TJHSST</h3>
+                                            <span class="skills-level">4 Years</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bxs-book-content skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">University of Michigan</h3>
+                                            <span class="skills-level">1 Year</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bxs-book-content skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">Harvard: Using Python for Research</h3>
+                                            <span class="skills-level">Certificate</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="skills-group">
+                                    <div class="skills-data">
+                                        <i class='bx bxs-book-content skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">IBM: ML</h3>
+                                            <span class="skills-level">WIP</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bxs-book-content skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">College course</h3>
+                                            <span class="skills-level">Advanced</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bxs-book-content skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">College course</h3>
+                                            <span class="skills-level">Intermediate</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                        </div>
+
+                        <div class="skills-content swiper-slide" id = "awards">
+                            <h3 class="skills-title">Awards</h3>
+                        
+                            <div class="skills-box">
+                                <div class="skills-group">
+                                    <div class="skills-data">
+                                        <i class='bx bxs-award skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">U.S Presidential Scholar</h3>
+                                            <span class="skills-level">1/62 Students Selected</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bxs-award skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">A2</h3>
+                                            <span class="skills-level">National</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bxs-award skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">A3</h3>
+                                            <span class="skills-level">National</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="skills-group">
+                                    <div class="skills-data">
+                                        <i class='bx bxs-award skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">A4</h3>
+                                            <span class="skills-level">Local</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bxs-award skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">A5</h3>
+                                            <span class="skills-level">International</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="skills-data">
+                                        <i class='bx bxs-award skills-icon' ></i>
+                                        <div>
+                                            <h3 class="skills-name">A6</h3>
+                                            <span class="skills-level">National</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </section>
+
+            <!--=============== WORK ===============-->
+            <section class="work section" id="portfolio">
+                <span class="section-subtitle">Portfolio</span>
+                <h2 class="section-title">Some of my work!</h2>
+
+                <div class="work-filters">
+                    <span class="work-item active-work" data-filter = 'all'>All</span>
+                    <span class="work-item" data-filter = '.engineering'>Engineering</span>
+                    <span class="work-item" data-filter = '.computerscience'>Programming</span>
+                    <span class="work-item" data-filter = '.research'>Research</span>
+                </div>
+
+                <div class="work-container container grid">
+                    <div class="work-card mix engineering" data-tilt>
+                        <img src="resources/images/work1.jpg" alt="" class="work-img">
+                        <h3 class="work-title">Autonomous Drone Pathfinding</h3>
+                        <a class="work-button">Learn more! <i class='bx bx-right-arrow-alt work-icon' ></i></a>
+                    </div>
+                    <div class="work-modal">
+                        <div class="work-modal-content">
+                            <i class="bx bx-x work-modal-close"></i>
+                            <h3 class="work-modal-title">Autonomous Drone Pathfinding</h3>
+                            <img src="resources/images/work1.jpg" alt="" class="work-modal-img">
+                            <p class="work-modal-description">
+                                I designed and implemented a novel iteration of the D* Lite algorithm to control a drone swarm for MITRE's MASE Lab.
+                                As a result, MITRE is now equipped with a state-of-the-art facility capable of supporting drone swarms for future research. 
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="work-card mix engineering" data-tilt>
+                        <img src="resources/images/work1.jpg" alt="" class="work-img">
+                        <h3 class="work-title">Electric Go-Kart</h3>
+                        <a class="work-button">Learn more! <i class='bx bx-right-arrow-alt work-icon' ></i></a>
+                    </div>
+                    <div class="work-modal">
+                        <div class="work-modal-content">
+                            <i class="bx bx-x work-modal-close"></i>
+                            <h3 class="work-modal-title">Electric Go-Kart</h3>
+                            <img src="resources/images/work1.jpg" alt="" class="work-modal-img">
+                            <p class="work-modal-description">
+                                I lead a team of 20 engineers to convert a gas-powered go-kart to electric. We also upgraded the kart 
+                                with new tires and added carbon fiber components to lighten the vehicle.
+                            </p>
+
+                        </div>
+                    </div>
+                    
+                    <div class="work-card mix computerscience" data-tilt>
+                        <img src="resources/images/work1.jpg" alt="" class="work-img">
+                        <h3 class="work-title">Disinformation Identifier</h3>
+                        <a class="work-button">Learn more! <i class='bx bx-right-arrow-alt work-icon' ></i></a>
+                    </div>
+                    <div class="work-modal">
+                            <div class="work-modal-content">
+                                <i class="bx bx-x work-modal-close"></i>
+                                <h3 class="work-modal-title">Disinformation Identifier</h3>
+                                <img src="resources/images/work1.jpg" alt="" class="work-modal-img">
+                                <p class="work-modal-description">
+                                    I worked with a small team of programmers to develop an algorithm to identify and respond to 
+                                    disinformation campaigns on social media sites. It was abale to identify disinformation in text as
+                                    well as in images and videos by using an OCR model.
+                                </p>
+
+                                
+                            </div>
+                    </div>
+                    
+                    <div class="work-card mix research" data-tilt>
+                        <img src="resources/images/work1.jpg" alt="" class="work-img">
+                        <h3 class="work-title">Lyme Disease Detector</h3>
+                        <a class="work-button">Learn more! <i class='bx bx-right-arrow-alt work-icon' ></i></a>
+                    </div>
+                    <div class="work-modal">
+                        <div class="work-modal-content">
+                            <i class="bx bx-x work-modal-close"></i>
+                            <h3 class="work-modal-title">Lyme Disease Detector</h3>
+                            <img src="resources/images/work1.jpg" alt="" class="work-modal-img">
+                            <p class="work-modal-description">
+                                I developed a mobile app capable of identiying the characteristic Erythema Migrans (EM) rash, which is a key
+                                symptom of Lyme disease. This rash can look like a number of other similar rashes, which means that doctors only
+                                identify it correctly 40% of the time. This model, however, is much better (90% accuracy.)
+                            </p>
+
+                            
+                        </div>
+                    </div>           
+
+                    <div class="work-card mix research" data-tilt>
+                        <img src="resources/images/work1.jpg" alt="" class="work-img">
+                        <h3 class="work-title">COVID-19 Epidemiology Research</h3>
+                        <a class="work-button">Learn more! <i class='bx bx-right-arrow-alt work-icon' ></i></a>
+                    </div>
+                    <div class="work-modal">
+                        <div class="work-modal-content">
+                            <i class="bx bx-x work-modal-close"></i>
+                            <h3 class="work-modal-title">COVID-19 Epidemiology Research</h3>
+                            <img src="resources/images/work1.jpg" alt="" class="work-modal-img">
+                            <p class="work-modal-description">
+                                I worked with a professor from the Albert Einstein College of Medicine (Dept. of Radiology)
+                                to investigate the cardiological impacts of COVID-19 post-infection. The research was published - 
+                                check it out <a href = "https://google.com" target = "_blank" class = "research-link">here!</a>
+                            </p>
+
+                            
+                        </div>
+                    </div>
+                    
+
+                    <div class="work-card mix computerscience" data-tilt>
+                        <img src="resources/images/work1.jpg" alt="" class="work-img">
+                        <h3 class="work-title">Flood Prediction Tool</h3>
+                        <a class="work-button">Learn more! <i class='bx bx-right-arrow-alt work-icon' ></i></a>
+                    </div>
+                    <div class="work-modal">
+                    <div class="work-modal-content">
+                        <i class="bx bx-x work-modal-close"></i>
+                        <h3 class="work-modal-title">Flood Predicition Tool</h3>
+                        <img src="resources/images/work1.jpg" alt="" class="work-modal-img">
+                        <p class="work-modal-description">
+                            I worked with a professor from George Mason University to develop a flood-prediction algorithm
+                            capable of forecasting future weather in the Chesapeake bay. It was published to GMU's iFlood website,
+                            which can be found <a href = "https://google.com" target = "_blank" class = "research-link">here!</a>
+                        </p>
+
+                        
+                    </div>
+                    </div>
+                    
+                    <div class="work-card mix research" data-tilt>
+                        <img src="resources/images/work1.jpg" alt="" class="work-img">
+                        <h3 class="work-title">Cybersecurity Research</h3>
+                        <a class="work-button">Learn more! <i class='bx bx-right-arrow-alt work-icon' ></i></a>
+                    </div>
+                    <div class="work-modal">
+                        <div class="work-modal-content">
+                            <i class="bx bx-x work-modal-close"></i>
+                            <h3 class="work-modal-title">Cybersecurity Research</h3>
+                            <img src="resources/images/work1.jpg" alt="" class="work-modal-img">
+                            <p class="work-modal-description">
+                                Over a period of 8 weeks, I worked with a team of researchers from the U.S Army to 
+                                identify potential cybersecurity threats to a number of critical systems. I also wrote a
+                                14-page research paper exploring the threats facing smart-farming systems, which are critical
+                                to our food supply. You can find it <a href = "https://google.com" target = "_blank" class = "research-link">here!</a>
+                            </p>
+
+                            
+                        </div>
+                    </div>
+                    
+
+                    <div class="work-card mix computerscience" data-tilt>
+                        <img src="resources/images/work1.jpg" alt="" class="work-img">
+                        <h3 class="work-title">VR Military Simulation</h3>
+                        <a class="work-button">Learn more! <i class='bx bx-right-arrow-alt work-icon' ></i></a>
+                    </div>
+                    <div class="work-modal">
+                        <div class="work-modal-content">
+                            <i class="bx bx-x work-modal-close"></i>
+                            <h3 class="work-modal-title">VR Military Simulation</h3>
+                            <img src="resources/images/work1.jpg" alt="" class="work-modal-img">
+                            <p class="work-modal-description">
+                                I developed a VR environment to assist special forces soldiers to 
+                                train their breaching techniques in a controlled environment. The system 
+                                track soldiers and then provides analytics to help the 
+                                soldiers identify potential mistakes. This work was presented to a skills-group
+                                of 50+ stakeholders, including representatives from the Navy Seals.
+                            </p>
+
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+
+
+            <!--=============== CONTACT ===============-->
+            <section class="contact section" id="contact">
+                <span class="section-subtitle">Contact</span>
+                <h2 class="section-title">Say hi!</h2>
+
+                <div class="contact-container container grid">
+                            <div class="contact-card">
+                                <i class='bx bx-mail-send contact-icon' ></i>
+                                <h3 class="contact-card-title">Email</h3>
+                                <span class="contact-card-data">tkoduru@umich.edu</span>
+                            
+                                <a href="https://gmail.com" target = "_blank" class="contact-button">Message!  <i class='bx bx-right-arrow-alt contact-button-icon' ></i></a>
+                            </div>
+
+                            <div class="contact-card">
+                                <i class='bx bx-message-square-dots contact-icon'></i>
+                                <h3 class="contact-card-title">Messenger</h3>
+                                <span class="contact-card-data">teja.koduru.10</span>
+                            
+                                <a href="https://m.me/teja.koduru.10" target = "_blank" class="contact-button">Text! <i class='bx bx-right-arrow-alt contact-button-icon' ></i></a>
+                            </div>
+
+                            <div class="contact-card">
+                                <i class='bx bx-phone contact-icon' ></i>
+                                <h3 class="contact-card-title">Phone</h3>
+                                <span class="contact-card-data">571-489-9066</span>
+                            
+                                <a href="tel:571-489-9066" target = "_blank" class="contact-button">Call! <i class='bx bx-right-arrow-alt contact-button-icon' ></i></a>
+                            </div>
+                </div>
+            </section>
+        </main>
+
+        <!--=============== FOOTER ===============-->
+        <footer class="footer">
+            <div class="footer-container container">
+                <h1 class="footer-title">Teja Koduru</h1>
+
+                <ul class="footer-list">
+                    <li>
+                        <a href="#about" class="footer-link">About</a>
+                    </li>
+
+                    <li>
+                        <a href="#portfolio" class="footer-link">Projects</a>
+                    </li>
+
+                    <li>
+                        <a href="#home" class="footer-link">Home</a>
+                    </li>
+                </ul>
+
+                <ul class="footer-social">
+                    <a href="https://www.linkedin.com/in/teja-koduru-44121622a/" target = "_blank" class="footer-social-link">
+                        <i class='bx bxl-linkedin' ></i>
+                    </a>
+                    <a href="https://www.facebook.com/teja.koduru.10" target = "_blank" class="footer-social-link">
+                        <i class='bx bxl-facebook-circle' ></i>
+                    </a>
+                    <a href="https://www.instagram.com/te.ja09/" target = "_blank" class="footer-social-link">
+                        <i class='bx bxl-instagram' ></i>
+                    </a>
+                    <a href="https://twitter.com/TJKoduru" target = "_blank" class="footer-social-link">
+                        <i class='bx bxl-twitter'></i>
+                    </a>
+                </ul>
+
+                <span class="footer-copy">
+                    &copy; 2021 Teja Koduru. All rights reserved.
+                </span>
+            </div>
+        </footer>
+
+        <!--=============== SCROLLREVEAL ===============-->
+        <script src="js/scrollreveal.min.js"></script>
+
+        <!--=============== MIXITUP FILTER ===============-->
+        <script src="js/mixitup.min.js"></script>
+
+        <!--=============== SWIPER JS ===============-->
+        <script src="js/swiper-bundle.min.js"></script>
+
+        <!--=============== MAIN JS ===============-->
+        <script src="js/main.js"></script>
+
+        <!--=============== ANIMATED TYPING ===============-->
+        <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+
+        <!--=================TILTING IMAGES ===================-->
+        <script type="text/javascript" src="js/vanilla-tilt.js"></script>
+
+        
+
+    </body>
+
+
+
+<script>
+
+var titles = new Typed('#multiple-titles', {
+    strings: ['Engineer', 'Programmer', 'Researcher', 'Student'],
+    typeSpeed: 100,
+    backSpeed: 100,
+    loop: true,
+    showCursor: false
+  });
+
+  var courses = new Typed('#multiple-courses', {
+    strings: ['Aerospace Engineering', 'Computer Science', 'Business'],
+    typeSpeed: 100,
+    backSpeed: 100,
+    backDelay: 2000,
+    loop: true,
+    showCursor: false
+  });
+
+  
+</script>
+
+</html>
