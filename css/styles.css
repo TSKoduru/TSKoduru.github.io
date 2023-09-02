@@ -873,21 +873,19 @@ body.light-theme{
   }
 
   .home-buttons{
-    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    font-size: .6rem;
   }
 
-  .home-social{
-    bottom: 2rem;
+  .home-social, .home-scroll{
+    opacity: 0;
   }
   .home-handle{
     width: 15rem;
-    height: auto;
-    align-self: center
-  }
-
-  .home-img{
-    width: max-content;
-    height: max-content;
+    height: 15rem;
   }
 
   .about-info{
