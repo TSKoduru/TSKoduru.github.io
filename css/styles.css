@@ -885,8 +885,8 @@ body.light-theme{
   }
 
   .home-img{
-    width: max-content;
-    height: max-content;
+    width: 15rem;
+    height: auto;
   }
 
   .about-info{
