@@ -875,6 +875,7 @@ body.light-theme{
   .hbutton{
     font-size: .6rem;
     margin: 0rem;
+    background-color: #8a8888;
   }
 
   .home-buttons{
@@ -919,6 +920,9 @@ body.light-theme{
     column-gap: .2rem;
   }
 
+  .contact-container, .contact-card{
+   row-gap:0;
+  }
 }
 
 @media screen and (min-width: 320px) {
