@@ -183,8 +183,7 @@ body.light-theme{
 }
 
 .research-link{
-  text-decoration: underline;
-  color: var(--second-hue);
+  color: var(--first-color);
   cursor: pointer;
 }
 .grid {
@@ -497,7 +496,6 @@ body.light-theme{
   row-gap: 2.5rem;
   padding-top: 1rem;
   max-width: 30rem;
-  scale: 120%
 }
 
 .skills-content{
@@ -657,10 +655,12 @@ body.light-theme{
 }
 
 .work-modal-img{
-  scale: 75%;
+  max-height: 20rem;
+  max-width: 15rem;
   outline: 2px solid #fff;
   border-radius: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
   transition: .4s;
 }
 
@@ -746,6 +746,8 @@ body.light-theme{
   border-radius: 1rem;
   text-align: center;
   transition: .4s;
+  max-width: auto;
+  max-height: auto;
 }
 
 .contact-card:hover{
@@ -865,7 +867,7 @@ body.light-theme{
 
 /*=============== BREAKPOINTS ===============*/
 /* For small devices */
-@media screen and (max-width: 320px){
+@media screen and (max-width: 400px){
   .nav_menu{
     padding: 1rem 1.5rem;
   }
@@ -875,12 +877,12 @@ body.light-theme{
   }
 
   .home-handle{
-    width: 150px;
-    height: 253px;
+    width: 70%;
+    height: auto;
   }
 
   .home-img{
-    width: 180px;
+    width: max-content;
     height: max-content;
   }
 
@@ -900,7 +902,7 @@ body.light-theme{
     z-index: 100;
   }
   .work-item{
-    font-size: var(--smaller-font-size);
+    font-size: .7rem;
   }
 
   .work-filters{
@@ -936,6 +938,7 @@ body.light-theme{
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
+    
   }
 
   .skills-content{
@@ -949,9 +952,11 @@ body.light-theme{
   }
 
   .work-img{
-    width: 295px;
+    max-width: AUTO;
+    max-height: 13rem;
     justify-content: center;
     justify-self: center;
+    outline: var(--circles-color) solid 2px;
   }
 
   .contact-info{
@@ -1107,6 +1112,10 @@ body.light-theme{
     font-size: 1.25rem;
     padding: 0.4rem;
     border-radius: 0.5rem;
+  }
+
+  .skills-container{
+    scale: 130%
   }
 }
 
