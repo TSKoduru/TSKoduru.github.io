@@ -880,8 +880,9 @@ body.light-theme{
     bottom: 2rem;
   }
   .home-handle{
-    width: auto;
+    width: 15rem;
     height: auto;
+    align-self: center
   }
 
   .home-img{
