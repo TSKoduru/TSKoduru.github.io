@@ -886,6 +886,8 @@ body.light-theme{
   .home-handle{
     width: 15rem;
     height: 15rem;
+    padding: auto;
+    margin:auto;
   }
 
   .about-info{
