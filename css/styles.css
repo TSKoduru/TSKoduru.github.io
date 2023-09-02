@@ -872,24 +872,16 @@ body.light-theme{
     padding: 1rem 1.5rem;
   }
 
-  .hbutton{
-    font-size: .6rem;
-    margin: 0rem;
-    background-color: #8a8888;
-  }
-
   .home-buttons{
-    flex-direction: row;
-    scale: 5%;
-    row-gap: 1px;
+    flex-direction: column;
   }
 
   .home-social{
     bottom: 3rem;
   }
   .home-handle{
-    max-width: 12rem;
-    height: auto;
+    width: 120px;
+    height: 233px;
   }
 
   .home-img{
