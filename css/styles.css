@@ -872,13 +872,23 @@ body.light-theme{
     padding: 1rem 1.5rem;
   }
 
-  .home-buttons{
-    flex-direction: column;
+  .hbutton{
+    font-size: .6rem;
+    margin: 0rem;
   }
 
+  .home-buttons{
+    flex-direction: row;
+    scale: 5%;
+    row-gap: 1px;
+  }
+
+  .home-social{
+    bottom: 3rem;
+  }
   .home-handle{
-    width: 70%;
-    height: 70%;
+    max-width: 12rem;
+    height: auto;
   }
 
   .home-img{
@@ -902,12 +912,13 @@ body.light-theme{
     z-index: 100;
   }
   .work-item{
-    font-size: .7rem;
+    font-size: .6rem;
   }
 
   .work-filters{
     column-gap: .2rem;
   }
+
 }
 
 @media screen and (min-width: 320px) {
