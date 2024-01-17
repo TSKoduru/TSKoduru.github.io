@@ -79,7 +79,7 @@ to reach out if you like what you find.
 
 Teja Koduru - tkoduru@umich.edu
 
-Project Link: [tkoduru.tech](tkoduru.tech)
+Project Link: [tkoduru.tech](https://tkoduru.tech)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
