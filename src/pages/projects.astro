@@ -1,0 +1,717 @@
+---
+import Base from '../layouts/Base.astro';
+import GridBackground from '../components/GridBackground.astro';
+
+const projects = [
+  { 
+    title: "LifeLink", 
+    subtitle: "Resilient Mesh Communication Network",
+    techSkills: ["ESP32-S3", "C++", "LoRa (915 MHz)", "Edge AI (TinyML)"],
+    generalOverview: "A decentralized, off-grid mesh communication architecture built at Stanford TreeHacks 2026 to provide critical connectivity in disaster zones and A2/AD contested environments.", 
+    techOverview: "Engineered solar-powered mesh nodes using the ESP32-S3. Implemented a custom OSI Layer 3 hybrid routing protocol and a 'Semantic Compression' edge AI triage system that utilizes decision trees to compress natural language into 8-byte payloads, effectively overcoming LoRa bandwidth limits.",
+    vid: "https://pub-8c2801c5782740f6b93f5fdd29e69365.r2.dev/lifelink.mp4",
+    link: "https://github.com/MythicalCow/lifelink"
+  },
+  { 
+    title: "DIALGA", 
+    subtitle: "Custom Binary Watch",
+    techSkills: ["C++", "PCB Design", "ATMEGA", "Hardware Assembly"],
+    generalOverview: "Engineered a wearable, battery-optimized binary watch from scratch, featuring physical states for time, date, and temperature.", 
+    techOverview: "Drafted custom GERBER and drill files, assembled SMD components via reflow, and flashed a custom Arduino bootloader. Wrote C++ firmware optimized for deep sleep to drastically extend the life of the 3.3V lithium coin cell battery.",
+    vid: "https://pub-8c2801c5782740f6b93f5fdd29e69365.r2.dev/dialga.mp4",
+    link: "https://github.com/TSKoduru/DIALGA"
+  },
+  { 
+    title: "Gamehawk (V1 & V2)", 
+    subtitle: "Autonomous GamePigeon Solver",
+    techSkills: ["Python", "Next.js", "Computer Vision", "G-Code", "Raspberry Pi"],
+    generalOverview: "An evolving project series built to dominate GamePigeon Wordhunt, starting as a software solver and culminating in a physical robot.", 
+    techOverview: "V1 (Wordhawk) utilized a custom depth-first search (DFS) trie algorithm to instantly find all possible words. V2 (RPi-Gamehawk) took this to the physical world for MHacks '25 by jury-rigging a 3D printer, using edge AI for OCR to read the board, and streaming dynamic G-code via TCP sockets to a Raspberry Pi to physically trace words on the screen.",
+    vid: "https://pub-8c2801c5782740f6b93f5fdd29e69365.r2.dev/gamehawk.mp4",
+    link: "https://github.com/TSKoduru/mhacks-gamehawk"
+  },
+  { 
+    title: "SIFT", 
+    subtitle: "Intelligent Recipe Generator",
+    techSkills: ["TypeScript", "Python", "Speech-to-Text", "Vision Models"],
+    generalOverview: "A completely voice and vision-driven application built at MHacks 2024 that generates personalized recipes based on what's currently in your pantry.", 
+    techOverview: "Handled state management for pantry inventory using speech-to-text and image recognition for non-standard ingredients. Passed the contextual data to a local LLM to generate instant, time-optimized recipes.",
+    vid: "https://pub-8c2801c5782740f6b93f5fdd29e69365.r2.dev/sift.mp4",
+    link: "https://github.com/TSKoduru/SIFT"
+  },
+  { 
+    title: "OneVote", 
+    subtitle: "MHacks 16 - Social Impact Track Winner",
+    techSkills: ["Next.js", "JavaScript", "REST APIs", "LLM Integration"],
+    generalOverview: "A centralized platform designed to bridge the gap between college students and local/national politics.", 
+    techOverview: "Built a lightweight frontend leveraging multiple civic APIs to display representative info and polling places. Integrated a fine-tuned AI chatbot and keyword extraction pipeline to answer specific questions about candidates.",
+    vid: "https://pub-8c2801c5782740f6b93f5fdd29e69365.r2.dev/onevote.mp4",
+    link: "https://github.com/ElemelonWind/one-vote"
+  },
+  { 
+    title: "LANTERN", 
+    subtitle: "Lyme Disease Detection",
+    techSkills: ["Python", "Computer Vision", "Transformers", "Jupyter"],
+    generalOverview: "A diagnostic tool built for MedHacks2, designed to accurately differentiate the bullseye rashes of Lyme disease from similar-looking dermatological conditions.", 
+    techOverview: "Utilized state-of-the-art vision transformers to analyze rash imagery. This architecture required significantly less training data than traditional CNNs while yielding higher accuracy in distinguishing specific erythema migrans patterns.",
+    vid: "https://pub-8c2801c5782740f6b93f5fdd29e69365.r2.dev/lantern.mp4",
+    link: "https://github.com/TSKoduru/LANTERN"
+  },
+  { 
+    title: "MiSpace 2025", 
+    subtitle: "Great Lakes Ice Forecast System",
+    techSkills: ["React", "HTML5 Canvas", "Python", "Physics Simulation", "HPO"],
+    generalOverview: "A comprehensive dashboard for predicting short-term sea-ice concentrations across the Great Lakes, combining historical atmospheric data with empirical physics. Won 10k!", 
+    techOverview: "Built a React/Vite frontend utilizing HTML5 Canvas for real-time grid mapping of ice concentrations. After deep learning approaches (U-Nets, CNNs) failed to learn the underlying physics of ice formation, I pivoted to engineering a custom 0-layer thermodynamic sea-ice model. Built a hyperparameter optimization (HPO) pipeline to empirically tune 5 key physical parameters against historical HRRR atmospheric forcing data.",
+    vid: "https://pub-8c2801c5782740f6b93f5fdd29e69365.r2.dev/ISEE.mp4",
+    link: "https://github.com/ElemelonWind/mispace-2025"
+  }
+];
+
+const totalProjects = projects.length;
+const minRadius = 130; 
+const maxRadius = 290; 
+const radiusStep = (maxRadius - minRadius) / Math.max(1, totalProjects - 1);
+
+const mappedProjects = projects.map((p, index) => {
+  const r = minRadius + (index * radiusStep);
+  const startAngle = (index / totalProjects) * 360; 
+  const orbitSpeed = 180 + (index * 20); 
+
+  return {
+    ...p,
+    r: Math.round(r), 
+    startAngle: startAngle.toFixed(2), 
+    orbitSpeed
+  };
+});
+---
+
+<Base title="Projects">
+  <div class="page-wrapper">
+    <GridBackground />
+
+    <div class="page-header mobile-only-header">
+      <p class="section-num">03 // projects</p>
+      <h1 class="page-title serif">Orbital Tracking</h1>
+    </div>
+
+    <div class="desktop-view">
+      <div class="orbit-side radar-panel aero-cut">
+        <div class="orbit-system" id="orbit-system" data-projects={JSON.stringify(mappedProjects)}>
+          
+          <div class="radar-instrumentation">
+            <div class="crosshair-x"></div>
+            <div class="crosshair-y"></div>
+            <div class="reference-ring" style={`--r: ${minRadius}px;`}></div>
+            <div class="reference-ring" style={`--r: ${(minRadius + maxRadius) / 2}px;`}></div>
+            <div class="reference-ring" style={`--r: ${maxRadius}px;`}></div>
+            <div class="radar-scanline" id="radar-scanline"></div>
+          </div>
+
+          {mappedProjects.map((p, index) => (
+            <div class="planet-positioner" style={`transform: rotate(${p.startAngle}deg); z-index: 1;`}>
+              <div class="planet-animator" style={`animation: orbit-spin ${p.orbitSpeed}s linear infinite;`}>
+                <div class="connecting-line" id={`line-${index}`} style={`--r: ${p.r}px;`}></div>
+                <div class="satellite-wrapper" style={`transform: translateY(-${p.r}px);`}>
+                  <div class="satellite-counter" style={`animation: counter-spin ${p.orbitSpeed}s linear infinite;`}>
+                    <div class="satellite" data-index={index} style={`transform: translate(-50%, -50%) rotate(-${p.startAngle}deg);`}>
+                      <span class="sat-label">{p.title.toUpperCase()}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          <div class="center-display" style="z-index: 10;">
+            <div class="center-data">
+              <span id="center-status-label" style="font-family:var(--font-mono); font-size:9px; color:var(--copper); letter-spacing:0.1em;">SYSTEM STATUS</span>
+              <h2 id="orbit-center-title">SEARCHING...</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="radar-readouts">
+          <div class="integrated-header">
+            <p class="section-num">03 // projects</p>
+            <h1 class="page-title serif">Orbital Tracking</h1>
+            <div class="header-stats">
+              <span>SYS.NAV // TERMINAL 01</span>
+              <span>RNG: {minRadius}-{maxRadius}m</span>
+              <span id="azimuth-display">AZIMUTH: 000°</span>
+            </div>
+          </div>
+
+          <div class="corner-readout top-right">
+            <span>STATUS: <span class="sig-strength">ONLINE</span></span>
+            <span>SIGNAL: |||||</span>
+          </div>
+          <div class="corner-readout bottom-left">
+            <span>SECTOR: 7G</span>
+            <span>REF: ANN_ARBOR</span>
+          </div>
+          <div class="corner-readout bottom-right">
+            <span>POWER: NOMINAL</span>
+            <span>TEMP: 22°C</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-side">
+        <div class="detail-panel" id="detail-panel">
+          <div class="detail-video-wrapper aero-cut">
+            <div class="telemetry-feed" id="idle-visual"></div>
+            <video id="detail-video" autoplay loop muted playsinline style="display: none;"></video>
+            <img id="detail-image" alt="Project visualization" style="display: none;" />
+            <div class="radar-overlay"></div>
+          </div>
+          
+          <div class="detail-content">
+            <h2 id="detail-title" class="searching-title">
+              SEARCHING<span class="dots">
+                <span>.</span><span>.</span><span>.</span>
+              </span>
+            </h2>
+            <p id="detail-subtitle">↳ awaiting target lock</p>
+            
+            <div id="default-state-content">
+              <p class="desc-text">No active selection. Click a target on the radar to engage tracking.</p>
+            </div>
+
+            <div id="active-state-content" style="display: none;">
+              <div class="tech-skills-container" id="detail-skills">
+                </div>
+
+              <h3 class="section-heading">GENERAL OVERVIEW</h3>
+              <p class="desc-text" id="detail-general"></p>
+
+              <h3 class="section-heading">TECH OVERVIEW</h3>
+              <div class="markdown-important">
+                <p class="desc-text" id="detail-tech"></p>
+              </div>
+            </div>
+
+            <a id="detail-link" href="#" target="_blank" class="system-btn mt-4 mb-2">
+              Access Logs ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-view">
+      <div class="timeline-container">
+        <div class="center-line"></div>
+        {mappedProjects.map((p) => (
+          <div class="timeline-node reveal-on-scroll">
+            <div class="timeline-dot"></div>
+            <div class="aero-card">
+              <div class="video-container aero-cut">
+                {p.vid ? (
+                  <video autoplay loop muted playsinline src={p.vid}></video>
+                ) : p.img ? (
+                  <img src={p.img} alt={p.title} />
+                ) : null}
+              </div>
+              <div class="card-content">
+                <h2>{p.title}</h2>
+                <p class="subtitle">↳ {p.subtitle}</p>
+                
+                <div class="tech-skills-container mt-2">
+                  {p.techSkills.map(skill => (
+                    <span class="skill-tag">{skill}</span>
+                  ))}
+                </div>
+
+                <h3 class="section-heading mt-3">GENERAL OVERVIEW</h3>
+                <p class="desc-text">{p.generalOverview}</p>
+
+                <h3 class="section-heading mt-3">TECH OVERVIEW</h3>
+                <div class="markdown-important">
+                  <p class="desc-text">{p.techOverview}</p>
+                </div>
+                
+                <a href={p.link} target="_blank" class="system-btn mt-4 mb-2">Access Logs ↗</a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+
+  .page-wrapper { 
+    position: relative; 
+    background: var(--cream); 
+    min-height: 100vh; 
+    overflow-x: hidden; 
+  }
+  .page-header { padding: 40px 40px 20px; position: relative; z-index: 10; }
+  .section-num { font-family: var(--font-mono); font-size: 11px; color: var(--copper); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
+  .page-title { font-size: 32px; color: var(--ink); font-style: italic; margin: 0; }
+  
+  @media (min-width: 901px) {
+    .page-wrapper {
+      height: calc(100vh - 80px); 
+      min-height: auto;
+      overflow: hidden; 
+    }
+    .mobile-only-header { display: none; }
+  }
+
+  .desktop-view { display: grid; grid-template-columns: 1fr 1fr; height: calc(100vh - 80px); max-width: 1400px; margin: 0 auto; padding: 40px; position: relative; z-index: 1; gap: 40px; }
+  .mobile-view { display: none; padding: 20px 20px 60px; position: relative; z-index: 1; }
+
+  .radar-panel {
+    position: relative; width: 100%; height: 100%; max-height: 720px;
+    background: var(--cream-card); border: 1px solid var(--sketch-stroke);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .radar-panel::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background-image: linear-gradient(rgba(24, 23, 23, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(24, 23, 23, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .aero-cut { clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px)); }
+
+  :root { --sat-size: 8px; }
+
+  .orbit-system { 
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; cursor: crosshair; 
+    transform-origin: center center;
+    transition: transform 0.3s ease;
+  }
+
+  @media (max-width: 1300px) and (min-width: 901px) { .orbit-system { transform: scale(0.85); } }
+  @media (max-width: 1100px) and (min-width: 901px) { .orbit-system { transform: scale(0.7); } }
+  @media (max-width: 980px) and (min-width: 901px) { .orbit-system { transform: scale(0.55); } }
+
+  .radar-instrumentation { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+  .crosshair-x { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--copper); opacity: 0.5; }
+  .crosshair-y { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--copper); opacity: 0.5; }
+  .reference-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: calc(var(--r) * 2); height: calc(var(--r) * 2); border-radius: 50%; border: 1px dashed var(--copper); opacity: 0.3; }
+  
+  .radar-scanline {
+    position: absolute; top: 0; left: 50%; bottom: 50%; width: 2px;
+    background: linear-gradient(to bottom, rgba(200,80,50,0.6), transparent);
+    transform-origin: bottom center; z-index: 10; transition: background 0.3s ease; pointer-events: none;
+  }
+  .radar-scanline.locked {
+    background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(200,80,50,0.8), transparent);
+    box-shadow: 0 0 15px rgba(200,80,50,0.6);
+  }
+  .radar-scanline::after {
+    content: ''; position: absolute; top: 0; left: 50%; width: 70px; height: 70px;
+    background: radial-gradient(circle at center, rgba(200,80,50,0.25) 0%, transparent 70%);
+    border-radius: 50%; transform: translate(-50%, -50%);
+  }
+
+  .radar-readouts { position: absolute; inset: 0; pointer-events: none; z-index: 20; }
+  
+  .integrated-header { position: absolute; top: 32px; left: 32px; }
+  .integrated-header .page-title { margin: 0 0 16px 0; }
+  .header-stats { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em; display: flex; flex-direction: column; gap: 4px; }
+
+  .corner-readout { position: absolute; font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em; display: flex; flex-direction: column; gap: 4px; padding: 32px; }
+  .corner-readout.top-right { top: 0; right: 0; text-align: right; }
+  .corner-readout.bottom-left { bottom: 0; left: 0; text-align: left; }
+  .corner-readout.bottom-right { bottom: 0; right: 0; text-align: right; }
+  .sig-strength { color: rgba(200,80,50,0.8); }
+
+  .center-display {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 140px; height: 140px; border-radius: 50%; border: 2px solid var(--copper); 
+    background: #f3eee7; box-shadow: inset 0 0 20px rgba(0,0,0,0.05), 0 0 20px rgba(200,80,50,0.15); 
+    display: flex; align-items: center; justify-content: center; text-align: center;
+  }
+  .center-display::before {
+    content: ''; position: absolute; inset: 6px; border-radius: 50%;
+    border: 1px dashed rgba(24, 23, 23, 0.15); border-top-color: var(--copper);
+    animation: orbit-spin 15s linear infinite reverse; pointer-events: none;
+  }
+  .center-data { position: relative; z-index: 2; padding: 0 10px; }
+  .center-data h2 { font-size: 15px; font-weight: 500; color: var(--ink); margin-top: 4px; transition: opacity 0.3s ease; }
+
+  .planet-positioner, .planet-animator, .satellite-wrapper, .satellite-counter { position: absolute; top: 50%; left: 50%; width: 0; height: 0; }
+  @keyframes orbit-spin { 100% { transform: rotate(360deg); } }
+  @keyframes counter-spin { 100% { transform: rotate(-360deg); } }
+
+  .connecting-line {
+    position: absolute; left: 50%; bottom: 50%; width: 1px; height: var(--r); transform: translateX(-50%);
+    background-image: linear-gradient(to bottom, var(--copper) 50%, transparent 50%);
+    background-size: 100% 12px; opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+    animation: dash-flow 1s linear infinite;
+  }
+  @keyframes dash-flow { to { background-position: 0 -12px; } }
+  .connecting-line.active { opacity: 0.6; }
+
+  .satellite {
+    position: absolute; width: var(--sat-size); height: var(--sat-size); border-radius: 50%; 
+    background: var(--cream); border: 2px solid var(--copper); cursor: pointer; 
+    transition: opacity 0.3s ease, background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    padding: 10px; box-sizing: content-box; pointer-events: auto; opacity: 0.6;
+  }
+  .satellite.active, .satellite:hover { opacity: 1; background: var(--copper); box-shadow: 0 0 0 3px rgba(200,80,50,0.2), 0 0 18px rgba(200,80,50,0.45); }
+
+  .sat-label {
+    position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); font-family: var(--font-mono); 
+    font-size: 10px; color: var(--ink); letter-spacing: 0.12em; white-space: nowrap; background: var(--cream); 
+    padding: 2px 7px; border: 1px solid var(--sketch-stroke); opacity: 0.9; pointer-events: none; transition: opacity 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .satellite:hover .sat-label, .satellite.active .sat-label { opacity: 1; color: var(--copper); border-color: rgba(200,80,50,0.4); }
+
+  .detail-side { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    justify-content: flex-start; 
+    height: 100%; 
+    max-height: 720px;
+    overflow-y: auto;  
+    padding-right: 12px; 
+}
+
+  
+  .detail-side::-webkit-scrollbar { width: 4px; }
+  .detail-side::-webkit-scrollbar-track { background: rgba(24, 23, 23, 0.05); border-radius: 4px; }
+  .detail-side::-webkit-scrollbar-thumb { background: var(--copper); border-radius: 4px; }
+
+  .detail-panel { 
+    width: 100%; 
+    max-width: 500px; 
+    margin: 0; 
+    padding: 20px 0 40px 0;
+    transition: opacity 0.3s ease, transform 0.3s ease; 
+  }
+  
+  .detail-panel.updating { opacity: 0; transform: translateY(10px); }
+  
+  .detail-video-wrapper { 
+    position: relative; width: 100%; aspect-ratio: 16/9; background: var(--ink); 
+    margin-bottom: 24px; border: 1px solid var(--sketch-stroke); overflow: hidden;
+  }
+  .detail-video-wrapper video, .detail-video-wrapper img { position: relative; width: 100%; height: 100%; object-fit: contain; opacity: 0.8; z-index: 2; background: transparent; }
+  .radar-overlay { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(200,80,50,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(200,80,50,0.1) 1px, transparent 1px); background-size: 20px 20px; z-index: 3; }
+
+  .telemetry-feed { position: absolute; inset: 0; padding: 24px; font-family: var(--font-mono); font-size: 11px; color: white; line-height: 1.6; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; z-index: 1; transition: opacity 0.3s ease; pointer-events: none; background: linear-gradient(to bottom, transparent, rgba(200, 80, 50, 0.05)); }
+  :global(.telemetry-line) { white-space: nowrap; opacity: 0.7; transition: opacity 0.2s ease, transform 0.2s ease; }
+
+  .detail-content h2 { font-size: 32px; color: var(--ink); font-weight: 500; margin-bottom: 8px; }
+  .detail-subtitle { font-family: var(--font-mono); font-size: 12px; color: var(--copper); margin-bottom: 20px; }
+  
+  .tech-skills-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  :global(.skill-tag) { font-family: var(--font-mono); font-size: 10px; color: var(--copper); border: 1px solid var(--copper); padding: 4px 8px; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(200, 80, 50, 0.05); }
+  .section-heading { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--ink); margin-bottom: 6px; letter-spacing: 0.1em; }
+  .desc-text { font-family: var(--font-mono); font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+  .markdown-important { border-left: 3px solid var(--copper); padding: 12px 16px; background: rgba(200, 80, 50, 0.05); margin-bottom: 20px; }
+  .markdown-important .desc-text { margin-bottom: 0; color: var(--ink); font-size: 13.5px; }
+  .mt-2 { margin-top: 8px; }
+  .mt-3 { margin-top: 12px; }
+
+  .system-btn { display: inline-block; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink); border-bottom: 1px solid var(--copper); text-decoration: none; padding-bottom: 2px; transition: color 0.2s ease; margin-top: 12px; }
+  .system-btn:hover { color: var(--copper); }
+
+  @media (max-width: 1200px) and (min-width: 901px) { .desktop-view { padding: 40px 24px; gap: 24px; } }
+  @media (max-width: 900px) { .desktop-view { display: none; } .mobile-view { display: block; } .page-header { padding: 40px 20px 20px; } }
+
+  .timeline-container { position: relative; padding: 20px 0; }
+  .center-line { position: absolute; left: 24px; top: 0; bottom: 0; width: 1px; background: var(--copper); opacity: 0.3; }
+  .timeline-node { position: relative; padding-left: 60px; margin-bottom: 60px; opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
+  .timeline-node.visible { opacity: 1; transform: translateY(0); }
+  .timeline-dot { position: absolute; left: 20.5px; top: 24px; width: 9px; height: 9px; border-radius: 50%; background: var(--cream); border: 1px solid var(--copper); }
+  .aero-card { background: var(--cream-card); border: 1px solid var(--sketch-stroke); padding: 8px; clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px)); }
+  .video-container { width: 100%; aspect-ratio: 16/9; background: var(--ink); margin-bottom: 16px; }
+  .video-container video, .video-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+  .card-content { padding: 0 12px 12px; }
+  .card-content h2 { font-size: 20px; color: var(--ink); font-weight: 500; margin-bottom: 6px; }
+  .card-content .subtitle { font-family: var(--font-mono); font-size: 11px; color: var(--copper); margin-bottom: 12px; }
+
+  .searching-title { display: inline-flex; align-items: flex-end; gap: 2px; }
+  .searching-title .dots span { display: inline-block; animation: bounceDot 1.2s infinite ease-in-out; opacity: 0.6; }
+  .searching-title .dots span:nth-child(1) { animation-delay: 0s; }
+  .searching-title .dots span:nth-child(2) { animation-delay: 0.15s; }
+  .searching-title .dots span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes bounceDot { 0%, 80%, 100% { transform: translateY(0); opacity: 0.4; } 40% { transform: translateY(-4px); opacity: 1; } }
+
+  @media (max-height: 800px) and (min-width: 901px) {
+  .detail-video-wrapper {
+    max-height: 220px; 
+  }
+  .desktop-view {
+    padding: 20px; 
+  }
+}
+
+</style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const orbitContainer = document.getElementById('orbit-system');
+    if (!orbitContainer) return;
+    
+    const projectData = JSON.parse(orbitContainer.getAttribute('data-projects') || '[]');
+    const satellites = document.querySelectorAll<HTMLElement>('.satellite');
+    const lines = document.querySelectorAll<HTMLElement>('.connecting-line');
+    const panel = document.getElementById('detail-panel');
+    const vidEl = document.getElementById('detail-video') as HTMLVideoElement;
+    const imgEl = document.getElementById('detail-image') as HTMLImageElement;
+    const centerTitle = document.getElementById('orbit-center-title');
+    const statusLabel = document.getElementById('center-status-label');
+    const detailTitle = document.getElementById('detail-title');
+    const detailSub = document.getElementById('detail-subtitle');
+    const azimuthDisplay = document.getElementById('azimuth-display');
+    const scanlineEl = document.getElementById('radar-scanline');
+    const telemetryFeed = document.getElementById('idle-visual');
+
+    const defaultState = document.getElementById('default-state-content');
+    const activeState = document.getElementById('active-state-content');
+    const skillsContainer = document.getElementById('detail-skills');
+    const generalDesc = document.getElementById('detail-general');
+    const techDesc = document.getElementById('detail-tech');
+
+    let lockedTarget: HTMLElement | null = null;
+    let scanAngle = 0;
+    let telemetryInterval: ReturnType<typeof setInterval> | null = null;
+    const POOL_SIZE = 15; 
+
+    if (panel && vidEl && centerTitle && projectData.length > 0) {
+      lockedTarget = null;
+      if (statusLabel) statusLabel.textContent = "SYSTEM STATUS";
+    }
+
+    function generateTelemetryString() {
+      const statuses = ['NOMINAL', 'SEARCHING', 'AWAITING LOCK', 'PING...', 'CALIBRATING'];
+      const status = statuses[Math.floor(Math.random() * statuses.length)];
+      const lat = (Math.random() * 180 - 90).toFixed(4);
+      const lon = (Math.random() * 360 - 180).toFixed(4);
+      const id = `SAT-${Math.floor(Math.random() * 9000) + 1000}`;
+      const now = new Date();
+      const time = now.toISOString().split('T')[1].slice(0, 12);
+      return `[${time}] ${id} | LAT ${lat} / LON ${lon} | ${status}`;
+    }
+
+    function initTelemetryPool() {
+      if (!telemetryFeed || telemetryFeed.children.length > 0) return;
+      for (let i = 0; i < POOL_SIZE; i++) {
+        const line = document.createElement('div');
+        line.className = 'telemetry-line';
+        line.textContent = generateTelemetryString();
+        telemetryFeed.appendChild(line);
+      }
+    }
+
+    function updateTelemetry() {
+      if (!telemetryFeed) return;
+      const oldestLine = telemetryFeed.firstElementChild as HTMLElement;
+      if (oldestLine) {
+        oldestLine.textContent = generateTelemetryString();
+        const isGlitch = Math.random() > 0.9;
+        oldestLine.style.opacity = isGlitch ? '0.3' : '0.7';
+        oldestLine.style.transform = isGlitch ? `translateX(${Math.random() * 4 - 2}px)` : 'none';
+        telemetryFeed.appendChild(oldestLine);
+      }
+    }
+
+    function startTelemetry() {
+      if (!telemetryInterval && telemetryFeed) {
+        initTelemetryPool();
+        telemetryFeed.style.opacity = '1';
+        telemetryInterval = setInterval(updateTelemetry, 250);
+      }
+    }
+
+    function stopTelemetry() {
+      if (telemetryInterval && telemetryFeed) {
+        clearInterval(telemetryInterval);
+        telemetryInterval = null;
+        telemetryFeed.style.opacity = '0';
+      }
+    }
+
+    function updateScanline() {
+      if (!scanlineEl || !orbitContainer) return;
+      if (lockedTarget) {
+        const orbitRect = orbitContainer.getBoundingClientRect();
+        const cx = orbitRect.left + orbitRect.width / 2;
+        const cy = orbitRect.top + orbitRect.height / 2;
+        const targetRect = lockedTarget.getBoundingClientRect();
+        const px = targetRect.left + targetRect.width / 2;
+        const py = targetRect.top + targetRect.height / 2;
+        const angle = Math.atan2(py - cy, px - cx) * (180 / Math.PI) + 90;
+        scanAngle = angle; 
+        scanlineEl.style.transform = `rotate(${scanAngle}deg)`;
+        scanlineEl.classList.add('locked');
+        if (azimuthDisplay) azimuthDisplay.textContent = `AZIMUTH: ${Math.round((scanAngle + 360) % 360).toString().padStart(3, '0')}°`;
+      } else {
+        scanAngle = (scanAngle + 0.6) % 360;
+        scanlineEl.style.transform = `rotate(${scanAngle}deg)`;
+        scanlineEl.classList.remove('locked');
+        if (azimuthDisplay) azimuthDisplay.textContent = `SWEEPING: ${Math.round(scanAngle).toString().padStart(3, '0')}°`;
+      }
+      requestAnimationFrame(updateScanline);
+    }
+    
+    updateScanline();
+    startTelemetry(); 
+
+    orbitContainer.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const clickedSat = target.closest('.satellite') as HTMLElement;
+
+      satellites.forEach(s => s.classList.remove('active'));
+      lines.forEach(l => l.classList.remove('active'));
+
+      if (clickedSat) {
+        lockedTarget = clickedSat;
+        clickedSat.classList.add('active');
+        stopTelemetry(); 
+        
+        const idx = parseInt(clickedSat.getAttribute('data-index') ?? '0', 10);
+        lines[idx]?.classList.add('active');
+        if (statusLabel) statusLabel.textContent = "ACTIVE TARGET";
+        
+        const data = projectData[idx];
+        const detailLink = document.getElementById('detail-link') as HTMLAnchorElement;
+
+        if (panel && centerTitle) {
+          panel.classList.add('updating');
+          centerTitle.style.opacity = '0';
+
+          setTimeout(() => {
+            // Logic for switching between video and image display
+            if (data.vid && vidEl) {
+              vidEl.style.display = 'block';
+              if (imgEl) imgEl.style.display = 'none';
+              vidEl.src = data.vid;
+              vidEl.play().catch(() => {});
+            } else if (data.img && imgEl) {
+              if (vidEl) {
+                vidEl.pause();
+                vidEl.style.display = 'none';
+              }
+              imgEl.style.display = 'block';
+              imgEl.src = data.img;
+            }
+
+            centerTitle.textContent = data.title;
+            detailTitle!.textContent = data.title;
+            detailSub!.textContent = `↳ ${data.subtitle}`;
+            
+            // Toggle Views
+            if(defaultState) defaultState.style.display = 'none';
+            if(activeState) activeState.style.display = 'block';
+
+            // Populate New Data Fields
+            if (skillsContainer) {
+              skillsContainer.innerHTML = data.techSkills.map((skill: string) => `<span class="skill-tag">${skill}</span>`).join('');
+            }
+            if (generalDesc) generalDesc.textContent = data.generalOverview;
+            if (techDesc) techDesc.textContent = data.techOverview;
+            
+            if (detailLink) {
+              detailLink.href = data.link;
+            }
+
+            panel.classList.remove('updating');
+            centerTitle.style.opacity = '1';
+          }, 300);
+        }
+      } else {
+        lockedTarget = null;
+        satellites.forEach(s => s.classList.remove('active'));
+        lines.forEach(l => l.classList.remove('active'));
+        startTelemetry(); 
+
+        if (statusLabel) statusLabel.textContent = "SYSTEM STATUS";
+
+        if (centerTitle) {
+          centerTitle.style.opacity = '0';
+          setTimeout(() => {
+            centerTitle.textContent = "SEARCHING...";
+            centerTitle.style.opacity = '1';
+          }, 200);
+        }
+
+        if (detailTitle && detailSub) {
+          detailTitle.innerHTML = `SEARCHING<span class="dots"><span>.</span><span>.</span><span>.</span></span>`;
+          detailSub.textContent = "↳ awaiting target lock";
+        }
+
+        // Revert to Default View
+        if(defaultState) defaultState.style.display = 'block';
+        if(activeState) activeState.style.display = 'none';
+
+        if (vidEl) {
+          vidEl.pause();
+          vidEl.removeAttribute("src");
+          vidEl.load();
+          vidEl.style.display = 'none';
+        }
+        if (imgEl) {
+          imgEl.removeAttribute("src");
+          imgEl.style.display = 'none';
+        }
+
+        if (panel) {
+          panel.classList.remove('updating');
+        }
+      }
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          
+          const mobileVideo = entry.target.querySelector('video');
+          if (mobileVideo) {
+            mobileVideo.play().catch(() => {}); 
+          }
+          
+          observer.unobserve(entry.target); 
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth <= 900) {
+        
+        if ((vidEl && vidEl.hasAttribute('src')) || (imgEl && imgEl.hasAttribute('src'))) {
+          if (vidEl) {
+            vidEl.pause();
+            vidEl.removeAttribute('src');
+            vidEl.load();
+            vidEl.style.display = 'none';
+          }
+          if (imgEl) {
+            imgEl.removeAttribute('src');
+            imgEl.style.display = 'none';
+          }
+          
+          if (centerTitle) centerTitle.textContent = "SEARCHING...";
+          if (statusLabel) statusLabel.textContent = "SYSTEM STATUS";
+          if (defaultState) defaultState.style.display = 'block';
+          if (activeState) activeState.style.display = 'none';
+          lockedTarget = null;
+          satellites.forEach(s => s.classList.remove('active'));
+          lines.forEach(l => l.classList.remove('active'));
+          startTelemetry();
+        }
+
+        document.querySelectorAll('.mobile-view video').forEach(vid => {
+          const v = vid as HTMLVideoElement;
+          if (v.paused) {
+            v.play().catch(() => {});
+          }
+        });
+      }
+    });
+  });
+</script>

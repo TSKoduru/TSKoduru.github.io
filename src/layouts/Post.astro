@@ -1,0 +1,57 @@
+---
+import Base from './Base.astro';
+import GridBackground from '../components/GridBackground.astro';
+
+interface Props {
+  title: string;
+  date: string;
+  tag: string;
+  readingTime: string;
+}
+
+const { title, date, tag, readingTime } = Astro.props;
+---
+
+<Base title={title}>
+  <div style="position:relative;background:var(--cream);min-height:100vh;">
+    <GridBackground />
+    <article style="max-width:720px;margin:0 auto;padding:52px 40px 80px;position:relative;z-index:1;">
+      <a href="/writing" style="
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--muted-light);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-decoration: none;
+        display: block;
+        margin-bottom: 36px;
+      ">
+        ← writing
+      </a>
+
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;">
+        <span class="copper-tag">{tag}</span>
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--muted-light);">
+          {date} · {readingTime}
+        </span>
+      </div>
+
+      <h1 class="serif" style="
+        font-size: clamp(28px, 5vw, 44px);
+        color: var(--ink);
+        font-weight: 400;
+        font-style: italic;
+        line-height: 1.15;
+        margin-bottom: 36px;
+      ">
+        {title}
+      </h1>
+
+      <hr style="border:none;border-top:1px solid var(--rule);margin-bottom:36px;" />
+
+      <div class="prose-notebook">
+        <slot />
+      </div>
+    </article>
+  </div>
+</Base>

@@ -1,0 +1,119 @@
+---
+---
+<div class="topo-wrapper">
+  <div id="map"></div>
+  <div class="map-coordinates">
+    <span id="lat-display">42.2780° N</span>
+    <span id="lng-display">83.7382° W</span>
+  </div>
+  <div class="map-glitch-overlay"></div>
+</div>
+
+<style>
+  .topo-wrapper {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    border: 1px solid var(--rule);
+    background: var(--cream-card);
+    overflow: hidden;
+  }
+
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+
+  .map-coordinates {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: var(--cream);
+    padding: 4px 8px;
+    border: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--copper);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+  }
+
+  .map-glitch-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.03) 0px,
+      rgba(0, 0, 0, 0.03) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    pointer-events: none;
+    z-index: 5;
+  }
+</style>
+
+<script>
+  import mapboxgl from 'mapbox-gl';
+  import 'mapbox-gl/dist/mapbox-gl.css';
+
+  let mapInstance = null;
+
+  function initMap() {
+    const mapContainer = document.getElementById('map');
+    
+    if (!mapContainer || mapContainer.dataset.loaded) {
+        if (mapInstance) mapInstance.resize();
+        return;
+    }
+
+    mapboxgl.accessToken = import.meta.env.PUBLIC_MAPBOX_TOKEN;
+
+    mapInstance = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/outdoors-v12',
+      center: [-83.7382, 42.2780],
+      zoom: 16.5,
+      pitch: 65,
+      bearing: -15,
+      interactive: true,
+      preserveDrawingBuffer: true 
+    });
+
+    mapInstance.on('load', () => {
+      mapContainer.dataset.loaded = "true";
+
+      mapInstance.addSource('mapbox-dem', {
+        'type': 'raster-dem',
+        'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+        'tileSize': 512,
+        'maxzoom': 14
+      });
+      mapInstance.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.8 });
+
+      mapInstance.addLayer({
+        'id': '3d-buildings',
+        'source': 'composite',
+        'source-layer': 'building',
+        'filter': ['==', 'extrude', 'true'],
+        'type': 'fill-extrusion',
+        'minzoom': 15,
+        'paint': {
+          'fill-extrusion-color': '#aaa',
+          'fill-extrusion-height': ['get', 'height'],
+          'fill-extrusion-base': ['get', 'min_height'],
+          'fill-extrusion-opacity': 0.5
+        }
+      });
+      
+      mapInstance.resize();
+    });
+  }
+
+  initMap();
+  document.addEventListener('astro:after-swap', initMap);
+  window.addEventListener('resize', () => {
+    if (mapInstance) mapInstance.resize();
+  });
+</script>

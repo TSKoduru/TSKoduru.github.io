@@ -1,0 +1,239 @@
+---
+import Base from '../layouts/Base.astro';
+import GridBackground from '../components/GridBackground.astro';
+import TopoMap from '../components/TopoMap.astro';
+import Parser from 'rss-parser';
+
+const now = new Date();
+const currentUpdate = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, "0")}.${String(now.getDate()).padStart(2, "0")}`;
+const parser = new Parser({
+  headers: {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+  },
+});
+
+const GOODREADS_RSS_URL = "https://www.goodreads.com/user/updates_rss/152189265";
+
+let books = [];
+try {
+  const feed = await parser.parseURL(GOODREADS_RSS_URL);
+  books = feed.items.slice(0, 5).map(item => ({
+    title: item.title.replace("Teja is currently reading ", "").replace("Teja finished reading ", ""),
+    link: item.link
+  }));
+} catch (e) {
+  books = [{ title: "Signal Lost: Check Goodreads directly", link: "https://www.goodreads.com/user/show/152189265" }];
+}
+
+const games = [
+  {
+    name: "Stellaris",
+    appId: 281990,
+    status: "I'm so in debt it's not even funny",
+    completion: 100,
+  },
+  {
+    name: "Kerbal Space Program",
+    appId: 220200,
+    status: "Jeb's trying to land on Jool",
+    completion: 100,
+  },
+  {
+    name: "Stardew Valley",
+    appId: 413150,
+    status: "Like 90% done with the community center?",
+    completion: 100,
+  },
+  {
+    name: "Factorio",
+    appId: 427520,
+    status: "If I ever open this game again I'm gonna lose a week",
+    completion: 100,
+  },
+];
+---
+
+<Base>
+  <div style="position:relative; background:var(--cream); min-height:100vh; padding-bottom: 80px; overflow-x: hidden;">
+    <GridBackground />
+
+    <section style="padding: 60px 20px; position:relative; z-index:1; max-width: 1100px; margin: 0 auto; box-sizing: border-box;">
+      
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:40px;">
+        <div style="display:flex; flex-direction:column;">
+            <p style="font-family:var(--font-mono);font-size:11px;color:var(--copper);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">
+              05 // now
+            </p>
+        </div>
+        <hr class="section-rule" style="flex-grow: 1;" />
+        <div style="font-family: var(--font-mono); font-size: 9px; color: var(--copper); letter-spacing: 0.1em; white-space:nowrap; text-align: right;">
+          SYS_VER: 2.4.1 // {currentUpdate}<br/>
+          STATUS: NOMINAL
+        </div>
+      </div>
+
+      <div class="now-grid">
+        
+        <div class="now-column">
+          
+          <div class="now-card">
+            <div class="card-header">"Whatcha been up to?"</div>
+            <p style="font-family:var(--font-mono); font-size:12px; line-height:1.7; margin:0; color:var(--muted);">
+              Hey! I put this page together to give a snapshot of what I'm currently doing. The idea is simple: if you're a friend of mine who I haven't talked to in a while, you'd read this and we're (partially) caught up.
+              Anyways, I'm currently just figuring out which fulltime job to take after graduation (So I'll either be in SF or NY, no surprises there), and in the meantime I'm working on some dumb personal projects (Like this
+              website, which took too long to put together.)
+
+              Oh, graduation's on May 2nd, if you want to stop by! Also, if you ARE my friend and want to catch up, please call me.
+            </p>
+          </div>
+
+          <div class="now-card">
+            <div class="card-header">Where I am</div>
+            <TopoMap />
+            <div class="card-footer">
+              ANN ARBOR, MI // ELEV: 256m // 42.2780° N, 83.7382° W
+            </div>
+          </div>
+
+          <div class="now-card">
+            <div class="card-header">Obligatory Spotify Plug</div>
+            <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/42UKpNkbSNPumWtO05st9S?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+        </div>
+
+        <div class="now-column">
+          <div class="now-card">
+            <div class="card-header">Currently Working On</div>
+            <ul class="bom-list">
+              <li><span>01</span> A tiny walking hexopod robot</li>
+              <li><span>02</span> Autoresearch, but for a 6DOF robot arm</li>
+              <li><span>03</span> Repairing my electric skateboard</li>
+              <li><span>04</span> A volumetric display to visualize STL files</li>
+            </ul>
+          </div>
+
+          <div class="now-card">
+            <div class="card-header">What I'm playing [Steam]</div>
+          
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              {games.map((game) => (
+                <div key={game.appId} style="display:flex; gap:16px; align-items:center;">
+                  
+                  <div class="game-art">
+                    <img
+                      src={`https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appId}/header.jpg`}
+                      alt={game.name}
+                    />
+                  </div>
+          
+                  <div style="flex-grow:1; min-width: 0;">
+                    <div
+                      style="font-size:13px; color:var(--ink); font-weight:500; text-transform:uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                    >
+                      {game.name}
+                    </div>
+          
+                    <div
+                      style="font-family:var(--font-mono); font-size:9px; color:var(--muted-light); margin-top:2px;"
+                    >
+                      STATUS: {game.status}
+                    </div>
+          
+                    <div style="margin-top:8px;">
+                      <div class="progress-container" style="height:3px;">
+                        <div
+                          class="progress-bar"
+                          style={{ width: `${game.completion}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+          
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="now-card">
+            <div class="card-header">What I'm doing over on Goodreads</div>
+            <div class="book-list">
+              {books.map(book => (
+                <a href={book.link} target="_blank" class="book-item">
+                  <div class="book-title">{book.title}</div>
+                  <div class="book-author">↳ View on Goodreads</div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div> 
+
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .now-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 32px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 1000px) {
+    .now-grid { 
+      grid-template-columns: 1fr; 
+    }
+  }
+
+  .now-column { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 32px; 
+    min-width: 0; 
+  }
+
+  .now-card {
+    background: var(--cream-card);
+    border: 1px dashed var(--sketch-stroke);
+    padding: 24px;
+    border-radius: 2px;
+    box-shadow: 4px 4px 0px rgba(140, 110, 60, 0.03);
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .card-header {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+
+  .card-footer { font-family: var(--font-mono); font-size: 9px; color: var(--muted-light); margin-top: 12px; }
+
+  .bom-list { list-style: none; padding: 0; margin: 0; }
+  .bom-list li { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-bottom: 10px; display: flex; gap: 12px; }
+  .bom-list li span { color: var(--copper); }
+
+  .game-art { width: 100px; height: 50px; background: var(--sketch-stroke); border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; flex-shrink: 0; }
+  .game-art img { width: 100%; height: 100%; object-fit: cover;}
+
+  .book-list { display: flex; flex-direction: column; gap: 16px; }
+  .book-item { text-decoration: none; display: block; transition: transform 0.2s ease; min-width: 0; }
+  .book-item:hover { transform: translateX(4px); }
+  .book-title { font-size: 14px; color: var(--ink); margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; }
+  .book-author { font-family: var(--font-mono); font-size: 10px; color: var(--muted-light); }
+
+  .progress-container { height: 4px; background: rgba(140, 110, 60, 0.1); border-radius: 2px; overflow: hidden; }
+  .progress-bar { height: 100%; background: var(--copper); }
+
+  .section-num { font-family: var(--font-mono); font-size: 11px; color: var(--copper); letter-spacing: 0.15em; }
+  .section-rule { height: 1px; border: none; background: var(--rule); opacity: 0.5; }
+</style>

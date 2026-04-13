@@ -1,0 +1,156 @@
+---
+const links = [
+  { href: '/',          label: 'home'     },
+  { href: '/projects',  label: 'projects' },
+  { href: '/writing',   label: 'writing'  },
+  { href: '/now',       label: 'now'      },
+  { href: '/contact',   label: 'contact'  },
+];
+const { pathname } = Astro.url;
+const currentPath = pathname.replace(/\/$/, "");
+---
+<header class="master-nav">
+  
+  <div style="display:flex; align-items:center;">
+    <a href="/" class="nav-logo">
+      T.K. // notebook
+    </a>
+    
+    <div class="telemetry-container">
+      <span class="pulse-dot"></span>
+      <span class="telemetry-text">42.2780° N, 83.7382° W // NOMINAL</span>
+    </div>
+  </div>
+
+  <nav style="display:flex; gap:24px; flex-shrink:0; flex-wrap:wrap; justify-content:flex-end;">
+    {links.map(link => {
+      const isActive = currentPath === link.href.replace(/\/$/, "");
+      return (
+        <a 
+          href={link.href} 
+          class={`nav-link ${isActive ? 'active' : ''}`}
+        >
+          {link.label}
+        </a>
+      );
+    })}
+  </nav>
+
+</header>
+
+<style>
+
+  .master-nav {
+    padding: 24px 40px; 
+    border-bottom: 1px solid var(--rule);
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    gap: 20px; 
+    flex-wrap: wrap; 
+    position: relative;
+    z-index: 100; 
+    background: var(--cream); 
+  }
+
+  .nav-logo {
+    font-family: var(--font-mono); 
+    font-size: 13px; 
+    color: var(--ink); 
+    letter-spacing: 0.05em; 
+    text-decoration: none; 
+    white-space: nowrap;
+  }
+
+  .nav-link {
+    font-family: var(--font-mono); 
+    font-size: 11px; 
+    color: var(--muted); 
+    letter-spacing: 0.1em; 
+    text-transform: uppercase; 
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .nav-link:hover {
+    color: var(--copper);
+  }
+
+
+  .telemetry-container {
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    margin-left: 16px; 
+    padding-left: 16px; 
+    border-left: 1px solid var(--rule); 
+    font-family: var(--font-mono); 
+    font-size: 9px; 
+    color: var(--muted-light); 
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .pulse-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--copper);
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(200, 121, 65, 0.7);
+    animation: pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+    flex-shrink: 0; 
+  }
+
+  @keyframes pulse {
+    to { box-shadow: 0 0 0 6px rgba(200, 121, 65, 0); }
+  }
+
+
+  @media (max-width: 850px) {
+    .telemetry-container {
+      margin-left: 20px; 
+      padding-left: 0;
+      border-left: none;
+    }
+    .telemetry-text {
+      display: none;
+    }
+  }
+
+
+
+  @media (max-width: 400px) {
+    .master-nav {
+      padding: 16px 20px; 
+    }
+    .nav-logo {
+      font-size: 11px; 
+    }
+  }
+
+  .nav-link {
+    position: relative;
+    font-family: var(--font-mono); 
+    font-size: 11px; 
+    color: var(--muted); 
+    letter-spacing: 0.1em; 
+    text-transform: uppercase; 
+    text-decoration: none;
+    transition: color 0.2s ease;
+    padding-bottom: 4px;
+  }
+
+  .nav-link.active {
+    color: var(--copper);
+  }
+  
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background: var(--copper);
+    border-radius: 2px;
+  }
+</style>

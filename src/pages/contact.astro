@@ -1,0 +1,344 @@
+---
+import Base from '../layouts/Base.astro';
+import GridBackground from '../components/GridBackground.astro';
+
+const links = [
+  { label: 'email',    val: 'tkoduru@umich.edu',       href: 'mailto:tkoduru@umich.edu', isEmail: true },
+  { label: 'github',   val: 'github.com/TSKoduru',       href: 'https://github.com/TSKoduru' },
+  { label: 'linkedin', val: 'linkedin.com/in/tskoduru',  href: 'https://linkedin.com/in/tskoduru' },
+];
+---
+
+<Base title="Contact">
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+
+  <div style="position:relative;background:var(--cream);min-height:100vh;overflow:hidden;">
+    <GridBackground />
+    
+    <div id="physics-container" class="envelope-container">
+      <canvas id="mouse-canvas"></canvas>
+    </div>
+
+    <div style="max-width:560px;margin:0 auto;padding:52px 40px 80px;position:relative;z-index:1;">
+      <p style="font-family:var(--font-mono);font-size:11px;color:var(--copper);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">
+        06 // contact
+      </p>
+      <h1 class="serif" style="font-size:42px;color:var(--ink);font-weight:400;font-style:italic;margin-bottom:16px;">
+        Say hello
+      </h1>
+      <p style="font-family:var(--font-mono);font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:40px;">
+       I don't bite, promise!
+      </p>
+      <hr style="border:none;border-top:1px solid var(--rule);margin-bottom:36px;" />
+      
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        {links.map(({ label, val, href, isEmail }) => (
+          <a 
+            href={href} 
+            target={isEmail ? undefined : "_blank"}
+            class={`contact-link ${isEmail ? 'email-copy-link' : ''}`}
+            data-email={isEmail ? val : undefined}
+          >
+            <span class="link-label">
+              {label}
+            </span>
+            <span class="link-value">
+              <span class="val-text">{val}</span>
+              {isEmail && <span class="copy-feedback">COPIED TO CLIPBOARD</span>}
+            </span>
+            <span class="hover-arrow">↗</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</Base>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+
+    
+    const emailLink = document.querySelector('.email-copy-link');
+    
+    if (emailLink) {
+      emailLink.addEventListener('click', async (e) => {
+        e.preventDefault(); 
+        const email = emailLink.getAttribute('data-email');
+        if (!email) return;
+
+        try {
+          await navigator.clipboard.writeText(email);
+          emailLink.classList.add('copied');
+          setTimeout(() => {
+            emailLink.classList.remove('copied');
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy text: ', err);
+          window.location.href = `mailto:${email}`; 
+        }
+      });
+    }
+
+    if (typeof Matter === 'undefined') return;
+
+    const container = document.getElementById('physics-container');
+    const mouseCanvas = document.getElementById('mouse-canvas');
+    if (!container || !mouseCanvas) return;
+
+    const hint = document.getElementById('play-hint');
+    const { Engine, Runner, Bodies, Composite, Events, Mouse, MouseConstraint } = Matter;
+    const engine = Engine.create({
+      positionIterations: 4,
+      velocityIterations: 4
+    });
+    engine.timing.timeScale = 0.8;
+    let width = container.clientWidth;
+    let height = container.clientHeight;
+
+    mouseCanvas.width = width;
+    mouseCanvas.height = height;
+
+    const groundOffset = 120;
+    
+    let ground = Bodies.rectangle(width / 2, height - groundOffset, width * 2, 50, { isStatic: true });
+    let rightWall = Bodies.rectangle(width + 25, height / 2, 50, height * 2, { isStatic: true });
+    let leftWall = Bodies.rectangle(-25, height / 2, 50, height * 2, { isStatic: true });
+
+    Composite.add(engine.world, [ground, rightWall, leftWall]);
+
+    const mouse = Mouse.create(mouseCanvas);
+    const mouseConstraint = MouseConstraint.create(engine, {
+      mouse,
+      constraint: {
+        stiffness: 0.2,
+        damping: 0.1,
+        render: { visible: false }
+      }
+    });
+    Composite.add(engine.world, mouseConstraint);
+
+    Events.on(mouseConstraint, 'startdrag', () => {
+      container.style.cursor = 'grabbing';
+    });
+    Events.on(mouseConstraint, 'enddrag', () => {
+      container.style.cursor = 'grab';
+    });
+    Events.on(mouseConstraint, 'mousemove', (e) => {
+      if (!mouseConstraint.body) {
+        const bodies = Composite.allBodies(engine.world).filter(b => !b.isStatic);
+        const hovered = bodies.some(b => Matter.Query.point([b], e.mouse.position).length > 0);
+        container.style.cursor = hovered ? 'grab' : 'default';
+      }
+    });
+
+    const runner = Runner.create();
+    Runner.run(runner, engine);
+
+    const envelopeElements = [];
+    const envelopeWidth = 45;
+    const envelopeHeight = 30;
+
+    const spawnEnvelope = () => {
+      if (envelopeElements.length > 40) return;
+
+      const spawnRange = width / 3;
+      const startX = (width / 2) - (spawnRange / 2) + (Math.random() * spawnRange);
+      const startY = -50;
+
+      const body = Bodies.rectangle(startX, startY, envelopeWidth, envelopeHeight, {
+        restitution: 0.4, 
+        friction: 0.8,
+        density: 0.04,
+        label: 'envelope'
+      });
+
+      const initialAngle = (Math.random() - 0.5) * Math.PI; 
+      Matter.Body.setAngle(body, initialAngle);
+      Composite.add(engine.world, body);
+
+      const el = document.createElement('div');
+      el.className = 'falling-envelope';
+      el.innerHTML = `
+        <svg width="100%" height="100%" viewBox="0 0 45 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="45" height="30" fill="var(--cream)" stroke="var(--copper)" stroke-width="1.5" opacity="0.4"/>
+          <path d="M0 0L22.5 16L45 0" stroke="var(--copper)" stroke-width="1.5" opacity="0.4"/>
+        </svg>
+      `;
+      container.appendChild(el);
+      envelopeElements.push({ body, el });
+    };
+
+    const spawnInterval = setInterval(spawnEnvelope, 1200);
+
+    Events.on(engine, 'afterUpdate', () => {
+      for (let i = 0; i < envelopeElements.length; i++) {
+        const { body, el } = envelopeElements[i];
+        const x = body.position.x - (envelopeWidth / 2);
+        const y = body.position.y - (envelopeHeight / 2);
+
+        const isGrabbed = mouseConstraint.body === body;
+        el.style.opacity = isGrabbed ? '1' : '';
+        el.style.transform = `translate(${x}px, ${y}px) rotate(${body.angle}rad)`;
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      width = container.clientWidth;
+      height = container.clientHeight;
+
+      mouseCanvas.width = width;
+      mouseCanvas.height = height;
+      
+      Matter.Body.setPosition(ground, { x: width / 2, y: height - groundOffset });
+      Matter.Body.setPosition(rightWall, { x: width + 25, y: height / 2 });
+      Matter.Body.setPosition(leftWall, { x: -25, y: height / 2 });
+
+      envelopeElements.forEach(({ body }) => {
+        let newX = body.position.x;
+        let newY = body.position.y;
+        let outOfBounds = false;
+
+        if (newX > width) { newX = width - 40; outOfBounds = true; }
+        if (newX < 0) { newX = 40; outOfBounds = true; }
+        if (newY > height - groundOffset) { newY = height - groundOffset - 40; outOfBounds = true; }
+
+        if (outOfBounds) {
+          Matter.Body.setPosition(body, { x: newX, y: newY });
+          Matter.Body.setVelocity(body, { x: 0, y: 0 });
+        }
+      });
+    });
+
+    document.addEventListener('astro:before-preparation', () => {
+      clearInterval(spawnInterval);
+      Runner.stop(runner);
+      Engine.clear(engine);
+    }, { once: true });
+  });
+</script>
+
+<style>
+  .contact-link {
+    text-decoration: none;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    position: relative;
+    padding: 6px 0; 
+    cursor: pointer;
+  }
+
+  .link-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--copper);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    min-width: 70px;
+    transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  .link-value {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: inline-grid;
+  }
+
+  .val-text, .copy-feedback {
+    grid-area: 1 / 1;
+    transition: all 0.3s ease;
+  }
+
+  .val-text {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .copy-feedback {
+    color: var(--copper);
+    opacity: 0;
+    transform: translateY(8px); 
+    white-space: nowrap;
+    font-weight: 600;
+    pointer-events: none;
+  }
+
+  .hover-arrow {
+    font-family: var(--font-mono);
+    color: var(--copper);
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    font-size: 14px;
+  }
+
+  .contact-link:hover .link-label {
+    transform: translateX(4px);
+  }
+
+  .contact-link:hover .link-value {
+    border-bottom-color: var(--copper);
+    color: var(--copper);
+    transform: translateX(4px);
+  }
+
+  .contact-link:hover .hover-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .contact-link.copied .val-text {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  .contact-link.copied .copy-feedback {
+    opacity: 1;
+    transform: translateY(0); 
+  }
+  
+  .contact-link.copied .link-value {
+    border-bottom-color: transparent;
+  }
+  
+  .contact-link.copied .hover-arrow {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+
+  .envelope-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    cursor: default;
+  }
+
+  #mouse-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: all;
+  }
+
+  :global(.falling-envelope) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45px;
+    height: 30px;
+    will-change: transform;
+    transition: opacity 0.1s ease;
+    pointer-events: none; 
+  }
+
+</style>

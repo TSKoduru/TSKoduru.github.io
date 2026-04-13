@@ -1,0 +1,144 @@
+---
+import Base from '../layouts/Base.astro';
+import GridBackground from '../components/GridBackground.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts'))
+  .sort((a, b) => (a.data.date < b.data.date ? 1 : -1));
+---
+
+<Base title="Writing">
+  <div style="position:relative;background:var(--cream);min-height:80vh;">
+    <GridBackground />
+
+    <div style="max-width:760px;margin:0 auto;padding:52px 40px;position:relative;z-index:1;">
+      <p style="font-family:var(--font-mono);font-size:11px;color:var(--copper);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">
+        04 // writing
+      </p>
+
+      <h1 class="serif" style="font-size:42px;color:var(--ink);font-weight:400;font-style:italic;margin-bottom:8px;">
+        The Notebook
+      </h1>
+
+      <p style="font-family:var(--font-mono);font-size:13px;color:var(--muted);margin-bottom:40px;line-height:1.7;">
+        Notes, essays, thoughts, grocery lists. Wait, what?
+      </p>
+
+      <div style="border-top:1px solid var(--rule);">
+        {posts.length === 0 && (
+          <div style="padding:24px 0;font-family:var(--font-mono);font-size:13px;color:var(--muted);">
+            No entries yet. The notebook is warming up.
+          </div>
+        )}
+
+        {posts.map((post, i) => (
+          <a href={`/writing/${post.id}`} style="text-decoration:none;">
+            <div
+              class="post"
+              style={`display:flex;align-items:flex-start;justify-content:space-between;
+              padding:20px 0;border-bottom:1px solid var(--rule);gap:16px;
+              animation-delay:${i * 80}ms;`}
+            >
+              <div style="flex:1;">
+
+                <!-- TITLE (typewriter) -->
+                <div
+                  class="serif title"
+                  data-text={post.data.title}
+                  style="font-size:18px;color:var(--ink);font-style:italic;margin-bottom:6px;line-height:1.3;"
+                >
+                  {post.data.title}
+                </div>
+
+                <!-- EXCERPT -->
+                <div
+                  class="excerpt"
+                  data-text={post.data.excerpt ?? ''}
+                  style="font-family:var(--font-mono);font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:8px;"
+                >
+                  {post.data.excerpt ?? ''}
+                </div>
+
+                <!-- DATE -->
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted-light);letter-spacing:0.05em;">
+                  {post.data.date}
+                </div>
+              </div>
+
+              <span class="copper-tag" style="flex-shrink:0;margin-top:4px;">
+                {post.data.tag}
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <style>
+
+    .post {
+      opacity: 0;
+      transform: translateY(6px);
+      animation: revealPost 420ms ease forwards;
+    }
+
+    @keyframes revealPost {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+
+    .title::after {
+      content: "▍";
+      animation: blink 1s infinite;
+      margin-left: 3px;
+      color: var(--copper);
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .excerpt {
+      opacity: 0;
+      animation: fadeIn 500ms ease forwards;
+      animation-delay: 0.4s;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+  </style>
+
+<script>
+  function startTyping() {
+    const targets = document.querySelectorAll("[data-text]");
+
+    targets.forEach((el, i) => {
+
+      const text = el.getAttribute("data-text") || "";
+      el.textContent = "";
+      const delay = i * 120;
+
+      setTimeout(() => {
+        let index = 0;
+        const speed = el.classList.contains("title") ? 18 : 6;
+
+        const interval = setInterval(() => {
+          el.textContent += text[index];
+          index++;
+
+          if (index >= text.length) {
+            clearInterval(interval);
+          }
+        }, speed);
+      }, delay);
+    });
+  }
+
+  document.addEventListener("astro:page-load", startTyping);
+</script>
+</Base>

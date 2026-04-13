@@ -1,0 +1,52 @@
+---
+interface Props {
+  name: string;
+  type: string;
+  desc: string;
+  lang: string;
+  href: string;
+  image?: string; 
+}
+
+const { name, type, desc, lang, href, image } = Astro.props;
+---
+
+<a href={href} target="_blank" rel="noreferrer" style="text-decoration:none;">
+  <div class="sketch-card" style="padding:18px 18px 16px;display:flex;flex-direction:column;height:100%;cursor:pointer;">
+    <div style="font-family:var(--font-mono);font-size:9px;color:var(--copper);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">
+      {type}
+    </div>
+    
+    {image && (
+      <div style="margin-bottom:14px; border:1px solid var(--rule); border-radius:2px; overflow:hidden; background:var(--cream);">
+        <img src={image} alt={`Preview of ${name}`} class="notebook-img" style="display:block; width:100%; height:auto;" />
+      </div>
+    )}
+
+    <div class="serif" style="font-size:18px;color:var(--ink);font-weight:400;margin-bottom:7px;line-height:1.2;">
+      {name}
+    </div>
+    <div style="font-family:var(--font-mono);font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:16px;flex:1;">
+      {desc}
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--rule);padding-top:10px;">
+      <span style="font-family:var(--font-mono);font-size:10px;color:var(--muted-light);">{lang}</span>
+      <span style="color:var(--copper);font-size:14px;">→</span>
+    </div>
+  </div>
+</a>
+
+<style>
+
+  .notebook-img {
+    mix-blend-mode: multiply;
+    filter: grayscale(100%) contrast(1.2) sepia(20%) hue-rotate(-15deg);
+    opacity: 0.85;
+    transition: opacity 0.3s ease, filter 0.3s ease;
+  }
+  
+  .sketch-card:hover .notebook-img {
+    opacity: 1;
+    filter: grayscale(60%) contrast(1.2) sepia(20%) hue-rotate(-15deg);
+  }
+</style>

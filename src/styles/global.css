@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cream:         #FAF8F2;
+  --cream-card:    #FDFBF5;
+  --ink:           #1E1608;
+  --ink-light:     #3A2E1A;
+  --muted:         #7A6A50;
+  --muted-light:   #B0965A;
+  --copper:        #C87941;
+  --copper-dim:    rgba(200, 121, 65, 0.15);
+  --copper-border: rgba(200, 121, 65, 0.35);
+  --grid-line:     rgba(140, 120, 80, 0.09);
+  --rule:          rgba(140, 120, 80, 0.22);
+  --sketch-stroke: rgba(140, 110, 60, 0.45);
+  --font-serif:    'Cormorant Garamond', Georgia, serif;
+  --font-mono:     'Courier New', Courier, monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.serif        { font-family: var(--font-serif); }
+.font-mono    { font-family: var(--font-mono); }
+
+.section-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--copper);
+  letter-spacing: 0.1em;
+}
+
+.sketch-card {
+  background: var(--cream-card);
+  position: relative;
+  border: 1.5px dashed var(--sketch-stroke);
+  transition: transform 0.15s;
+}
+.sketch-card:hover { transform: translateY(-2px); }
+
+.copper-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #8A6A30;
+  background: var(--copper-dim);
+  border: 1px solid var(--copper-border);
+  padding: 3px 11px;
+  border-radius: 2px;
+  letter-spacing: 0.08em;
+}
+
+.section-rule {
+  border: none;
+  border-top: 1px solid var(--rule);
+  flex: 1;
+}
+
+.dashed-cta {
+  border: 1.5px dashed var(--copper-border);
+  background: rgba(200, 121, 65, 0.04);
+}
+
+@keyframes draw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+.trace-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 2s ease forwards;
+}
+
+/* Blog prose styles */
+.prose-notebook {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--ink-light);
+  line-height: 1.85;
+  max-width: 680px;
+}
+.prose-notebook h1,
+.prose-notebook h2,
+.prose-notebook h3 {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  font-weight: 400;
+  margin: 2rem 0 0.75rem;
+}
+.prose-notebook h1 { font-size: 2rem; font-style: italic; }
+.prose-notebook h2 { font-size: 1.5rem; }
+.prose-notebook h3 { font-size: 1.2rem; }
+.prose-notebook p  { margin: 0 0 1.25rem; }
+.prose-notebook a  { color: var(--copper); text-decoration: underline; text-underline-offset: 3px; }
+.prose-notebook code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: rgba(140,110,60,0.1);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+.prose-notebook pre {
+  background: #F5F2EA;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+.prose-notebook blockquote {
+  border-left: 3px solid var(--copper);
+  padding-left: 1rem;
+  color: var(--muted);
+  margin: 1.5rem 0;
+}
+
+.notebook-img {
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+  mix-blend-mode: multiply; 
+  filter: grayscale(100%) contrast(1.2) sepia(20%) hue-rotate(-15deg);
+  opacity: 0.85;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--copper);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(200, 121, 65, 0.7);
+  animation: pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes pulse {
+  to {
+    box-shadow: 0 0 0 6px rgba(200, 121, 65, 0);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--cream);
+  border-left: 1px dashed var(--rule);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--copper);
+  border-radius: 0px; 
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink);
+}
+
+::view-transition-old(root) {
+  animation: 200ms ease-in-out both fade-out;
+}
+
+::view-transition-new(root) {
+  animation: 300ms ease-in-out both fade-in;
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

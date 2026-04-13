@@ -1,0 +1,254 @@
+<div id="physics-bg">
+  <canvas id="global-canvas"></canvas>
+</div>
+
+<div class="hud-container">
+  <button id="reset-physics" class="hud-reset">reset orbits</button>
+</div>
+
+<style>
+  #physics-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  #global-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hud-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hud-hint {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .hud-reset {
+    pointer-events: auto;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--copper);
+    background: var(--cream-card);
+    border: 1px dashed var(--sketch-stroke);
+    padding: 6px 12px;
+    border-radius: 2px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    box-shadow: 2px 2px 0px rgba(140, 110, 60, 0.08);
+  }
+
+  .hud-reset:hover {
+    background: var(--copper);
+    color: var(--cream);
+    border-color: var(--copper);
+  }
+
+  @media (max-width: 800px) {
+    #physics-bg,
+    .hud-container {
+      display: none !important;
+    }
+  }
+</style>
+
+<script is:inline>
+  let canvas, ctx, resetBtn;
+  let width, height;
+
+  const G = 0.5;
+  const softening = 500;
+
+  let bodies = [];
+  let raf;
+
+  let mouse = { x: -1000, y: -1000, mass: 15000, active: false };
+
+  function rand(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function initDOM() {
+    canvas = document.getElementById('global-canvas');
+    resetBtn = document.getElementById('reset-physics');
+
+    if (!canvas) return false;
+
+    ctx = canvas.getContext('2d');
+    return true;
+  }
+
+  function init() {
+    if (!initDOM()) return;
+
+    width = window.innerWidth;
+    height = window.innerHeight;
+
+    canvas.width = width;
+    canvas.height = height;
+
+    const cx = width / 2;
+    const cy = height / 2 + 150;
+
+    bodies = [
+      {
+        x: cx,
+        y: cy,
+        vx: 0,
+        vy: 0,
+        mass: 3000,
+        radius: 4,
+        color: '#36454F',
+        path: []
+      },
+
+      ...Array.from({ length: 10 }).map(() => ({
+        x: cx + rand(-300, 300),
+        y: cy + rand(-250, 250),
+        vx: rand(-5, 5),
+        vy: rand(-5, 5),
+        mass: rand(10, 15),
+        radius: rand(2, 3),
+        color: ['#C87941', '#7A6A50', '#B0965A'][Math.floor(rand(0, 3))],
+        path: []
+      }))
+    ];
+
+    if (resetBtn) {
+      resetBtn.onclick = init;
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mousedown', () => mouse.active = true);
+    window.addEventListener('mouseup', () => mouse.active = false);
+    
+    window.addEventListener('touchstart', (e) => {
+      mouse.active = true;
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+    });
+    window.addEventListener('touchend', () => mouse.active = false);
+  }
+
+  function update() {
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.globalAlpha = 1;
+
+    if (mouse.active) {
+      for (let i = 0; i < bodies.length; i++) {
+        let b = bodies[i];
+        let dx = mouse.x - b.x;
+        let dy = mouse.y - b.y;
+
+        let distSq = dx * dx + dy * dy + softening;
+        let dist = Math.sqrt(distSq);
+
+        let force = (G * b.mass * mouse.mass) / distSq;
+        let ax = (force * dx) / dist;
+        let ay = (force * dy) / dist;
+
+        b.vx += ax / b.mass;
+        b.vy += ay / b.mass;
+      }
+
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, 6, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(200, 121, 65, 0.6)'; 
+      ctx.lineWidth = 3;
+      ctx.stroke();
+    }
+
+    for (let i = 0; i < bodies.length; i++) {
+      for (let j = i + 1; j < bodies.length; j++) {
+        let b1 = bodies[i];
+        let b2 = bodies[j];
+
+        let dx = b2.x - b1.x;
+        let dy = b2.y - b1.y;
+
+        let distSq = dx * dx + dy * dy + softening;
+        let dist = Math.sqrt(distSq);
+
+        let force = (G * b1.mass * b2.mass) / distSq;
+        let ax = (force * dx) / dist;
+        let ay = (force * dy) / dist;
+
+        b1.vx += ax / b1.mass;
+        b1.vy += ay / b1.mass;
+        b2.vx -= ax / b2.mass;
+        b2.vy -= ay / b2.mass;
+      }
+    }
+
+    bodies.forEach((b) => {
+      b.x += b.vx;
+      b.y += b.vy;
+
+      b.path.push({ x: b.x, y: b.y });
+      if (b.path.length > 120) b.path.shift();
+
+      if (b.path.length > 1) {
+        ctx.beginPath();
+        ctx.moveTo(b.path[0].x, b.path[0].y);
+
+        for (let k = 1; k < b.path.length; k++) {
+          ctx.lineTo(b.path[k].x, b.path[k].y);
+        }
+
+        ctx.strokeStyle = b.color;
+        ctx.lineWidth = 1;
+        ctx.globalAlpha = 0.35;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+
+      ctx.fillStyle = b.color;
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    raf = requestAnimationFrame(update);
+  }
+
+  function start() {
+    cancelAnimationFrame(raf);
+    init();
+    update();
+  }
+
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:after-swap', start);
+  window.addEventListener('resize', init);
+
+  start();
+</script>
