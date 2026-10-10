@@ -1,0 +1,1298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Teja Koduru</title>
+<meta name="description" content="Teja Koduru, MTS at xAI.">
+<meta name="theme-color" content="#0b0a12">
+<meta name="color-scheme" content="dark">
+<link rel="icon" type="image/svg+xml">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAMAAAAKE/YAAAAAYFBMVEX/0o7xx4fXsnq+nW2xkmaqjGOdglyReFaIcVJmVUBZSjpJPTFCNy46M1A5Mk83MEs0Lkg0LUcyLEU6MSouKUEsJj0pJDgoIzgqIyIfGyMcGSUZFyUYFSMUEh4ODRcLChJKpU3aAAAD3klEQVR42u2b63aqMBCFg7BAQZF6v5b3f8vao5X7MGNPQ7ZM/nXxSXYhJJk9GZMDNlP9cz2bRtF0tiZ+cUzuTHIcjCmLTkLPPJoXJu23icPJDzMJ44GYQnTim0rzW2THQZUJ4kGYp+jINFpUu80h8uqIFx0GYB6ij75paX5lKM2DNiaY22fuoo8T09omJdVzv53x59aZu+gO5kYV7yvoYoKDbcZ0jOfGuHaJ+RadGKI95pDY60a82DJjqMFRGiABxQSWGdPzoB+POqaZ2C5zEx3SUPh9I7eYm2iPhjxiSixPjRYZk69NT1v3jqB/Y8giY/JZHzTLXWNMPu2DprlrjKFm8ud87hgDKhpyeEB+iJBTHuTigrmMQ26YILemmEEAZLiFGdhiWgiQZg2mLQZqQGJavaCmOmr6YsyiOa/eMdGcj8wx0ZzpzDHRnIXDNdGcJdo10ZzNkGuiOdtO50RzNvj/X/Tnab9aLlf70yfxk/MuS9Nsd27OG4xQStZXB1MRfdkuHm176brPdfPDbK61S5ygVdRXF1MWffpYPNvHqeMxpwWTVh82xx4Q9dXJlERfSsyNav3/r2mZSSvPmmPESPrqZgrRn9tFpW3bxtqmymzK+w2G5SXpi2AK0adFrbW8tHOdKQ0Qjrko6YtgCtH7OrRv3mhXZ3bFNY6NK+mLYArRqzq0at4oqzNZcY1jmEv6IphC9LIOLZs3SutMylpZGusLpy+CARcNOTwgP0TIKQ9ycRlwGc9eXsaH2zBlv9gwYW5NMYMAzHBrjIEtpIWAadZg2mKYBiSo1QtqqoOmLzBFM1J7jonmJFEdE81JV7smOvrjzdIfiOYcwXBNNOewi3OiGceKnBPtbs6lm0mYrkdf2NbLiANbguEcSuQEyL2M1EIgmIRtMNFWRD8jNGsoRmLWUKZPPyOzxUiGcaSZY68xGJkBSTGcw+McI5PByKxeipFYvZRlzGBkpjrFSEx1ypxnMLL0BcVI0hdUGoTBgIuGHB6QHyLklAe5uLywjGeDL+PyDVPmwIYJc2uKGQRghltjDGwxLQRIswbTFgM1IDGtXlBTHTV9gSha61xsiNY6Fyuitc7Fjmitc2GL/l24JTvi5kjORXSY0JGci+jYpuZcXrfFJEeRncm5SA59a85Fcy6ac9Gcy8AfIuSUB7m4jDPnMsiGCXNrihkEYIZbYwxstc5FbbE3NCBBrV5QUx00fYEpWutcLIjWOhcrorXOxZJorXPhitY6F61z0ZxL6aLWuWjORXMumnPRnIvWubzF4qJ1LlrnonUujoRbYwxstc5FbbF3NCBzrXN5o/TFF/uGcyMb20peAAAAAElFTkSuQmCC">
+<script>
+// the scene's theme colour and its favicon: a 6x6 dot picture of sky, sun or lamp, and wheat or sea
+function applyScene(s) {
+  const l = s === "lighthouse", c = l ? ["05070b", "2a3442", "ffd47a", "4a5868"] : ["0b0a12", "3d3a78", "ffd28e", "d9963f"];
+  let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 6"><rect width="6" height="6" rx="1.3" fill="#${c[0]}"/>`;
+  for (let i = 0; i < 36; i++) {
+    const x = i % 6, y = i / 6 | 0, sun = x === 3 - l && y === 2 - l;
+    svg += `<circle cx="${x + .5}" cy="${y + .5}" r="${sun ? .5 : y < 3 ? .21 : y > 3 ? .4 : .28}" fill="#${c[sun ? 2 : y < 3 ? 1 : 3]}"/>`;
+  }
+  document.documentElement.dataset.scene = l ? s : "wheat";
+  document.querySelector("meta[name=theme-color]").content = "#" + c[0];
+  document.querySelector("link[rel=icon]").href = "data:image/svg+xml," + encodeURIComponent(svg + "</svg>");
+}
+try { applyScene(new URLSearchParams(location.search).get("scene") || localStorage.getItem("scene")); } catch (e) { applyScene(); }
+</script>
+<style>
+@property --ink{syntax:"<color>";inherits:true;initial-value:#fff}
+@property --mute{syntax:"<color>";inherits:true;initial-value:#fff}
+@property --gold{syntax:"<color>";inherits:true;initial-value:#fff}
+@property --line{syntax:"<color>";inherits:true;initial-value:#fff}
+@property --bg{syntax:"<color>";inherits:true;initial-value:#000}
+@property --pane{syntax:"<color>";inherits:true;initial-value:#000}
+@property --edge{syntax:"<color>";inherits:true;initial-value:#fff}
+@property --hi{syntax:"<color>";inherits:true;initial-value:#fff}
+@property --shade{syntax:"<color>";inherits:true;initial-value:#000}
+@property --hover{syntax:"<color>";inherits:true;initial-value:#fff}
+@property --sat{syntax:"<number>";inherits:true;initial-value:1}
+:root{--ink:#f3e5cb;--mute:#bcae9a;--gold:#ffd28e;--line:rgba(243,229,203,.14);--bg:#0b0a12;--pane:rgba(18,14,30,.62);--sat:.85;--edge:rgba(255,238,212,.14);--hi:rgba(255,246,230,.08);--shade:rgba(0,0,0,.7);--hover:rgba(255,210,142,.08);transition:.5s ease;transition-property:--ink,--mute,--gold,--line,--bg,--pane,--edge,--hi,--shade,--hover,--sat}
+:root[data-scene=lighthouse]{--ink:#e3e8ef;--mute:#98a3b2;--gold:#ffd47a;--line:rgba(214,226,242,.13);--bg:#05070b;--pane:rgba(8,11,18,.6);--sat:1;--edge:rgba(206,220,240,.13);--hi:rgba(230,240,255,.06);--shade:rgba(0,0,0,.8);--hover:rgba(255,212,122,.07)}
+html{background:var(--bg);color:var(--ink);font:15px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0}
+canvas{position:fixed;top:0;left:0;z-index:-1;pointer-events:none}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+nav{position:fixed;inset:0 0 auto;z-index:1;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:16px clamp(16px,4vw,40px);font-size:12px;letter-spacing:.06em}
+nav a{color:var(--mute)}
+nav span{justify-self:end}
+nav span a+a{margin-left:1.5em}
+nav .on{color:var(--gold)}
+nav .me{justify-self:start;white-space:nowrap;color:var(--ink);opacity:0;transition:opacity .4s}
+.past-hero nav .me{opacity:1}
+.scenes{display:flex;gap:2px;margin:-6px 12px;padding:2px;border:1px solid var(--line);border-radius:99px;background:var(--pane);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.scenes button{position:relative;display:grid;place-items:center;width:30px;height:24px;padding:0;border:0;border-radius:99px;background:none;color:var(--mute);opacity:.5;cursor:pointer;transition:color .3s,opacity .3s,background-color .3s}
+.scenes [aria-pressed=true]{color:var(--gold);opacity:1;background:var(--hover)}
+.scenes button:focus-visible{outline:1px solid var(--gold);outline-offset:1px}
+svg{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.scenes svg{width:17px;height:17px}
+.scenes button::after{content:attr(aria-label);position:absolute;top:calc(100% + 9px);left:50%;translate:-50% -3px;padding:.25em .7em;font-size:11px;letter-spacing:.04em;white-space:nowrap;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;opacity:0;pointer-events:none;transition:opacity .2s,translate .2s}
+.scenes button:focus-visible::after{opacity:1;translate:-50% 0}
+@media (hover:hover){.scenes button:hover{opacity:.9}.scenes button:hover::after{opacity:1;translate:-50% 0}}
+section{position:relative;min-height:100vh;min-height:100svh;display:grid;justify-items:center;align-content:start;padding:16vh 16px 10vh;box-sizing:border-box}
+#top{align-content:center;padding:14vh 16px}
+h1{margin:0;font:800 clamp(2.6rem,11vw,6rem)/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:-.03em;text-align:center}
+.cue{position:absolute;bottom:3vh;font-size:12px;color:var(--mute);animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{translate:0 4px}}
+.panel{width:min(36rem,100%);padding:26px clamp(18px,4vw,32px);box-sizing:border-box;border-radius:18px}
+.nogl .panel{background:var(--pane);-webkit-backdrop-filter:blur(44px) saturate(var(--sat));backdrop-filter:blur(44px) saturate(var(--sat));border:1px solid var(--edge);box-shadow:inset 0 1px var(--hi),0 24px 60px -30px var(--shade)}
+h2{margin:0 0 1rem;font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.gl .panel{text-shadow:0 0 2px var(--bg),0 0 8px var(--bg),0 0 18px var(--bg)}
+p{margin:0}
+.panel p,.panel li{color:var(--mute)}
+ul{list-style:none;margin:0;padding:0}
+h3{margin:1.8rem 0 .5rem;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+h2+h3{margin-top:0}
+.jobs li{padding:.7rem 0;border-top:1px solid var(--line)}
+.jobs li:last-child{border-bottom:1px solid var(--line)}
+.now li{position:relative;padding-left:1.3em}
+.now li+li{margin-top:.5rem}
+.now li::before{content:"•";position:absolute;left:0;color:var(--gold)}
+.row{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .6rem}
+.row b{font-weight:600;color:var(--ink)}
+.row em{font-style:normal;color:var(--mute)}
+.row time{margin-left:auto;font-size:11px;letter-spacing:.06em;color:var(--mute);white-space:nowrap;font-variant-numeric:tabular-nums}
+.sum{display:block;margin-top:.15rem;font-size:12px;color:var(--mute);opacity:.8}
+.sum a{white-space:nowrap}
+.links{display:flex;flex-wrap:wrap;gap:.4rem 1.5rem;margin-top:1.2rem;padding-top:16px;border-top:1px solid var(--line)}
+.links a{display:inline-flex;align-items:center;gap:.45em;border-radius:6px;outline-offset:3px}
+.links a:focus-visible{outline:1px solid var(--gold)}
+.links svg{width:16px;height:16px}
+footer{position:absolute;bottom:3vh;font-size:12px;color:var(--mute)}
+.firefly body{cursor:none}
+.firefly :is(nav,.panel,footer){cursor:auto}
+.firefly :is(a,button){cursor:pointer}
+@media (max-width:560px){
+  html{font-size:13px;line-height:1.55}
+  nav{padding:12px 14px;font-size:11px;letter-spacing:.02em}
+  nav span a+a{margin-left:.85em}
+  .scenes{margin:-7px 6px}
+  .scenes button{width:28px}
+  section{padding:14vh 12px 8vh}
+  .panel{padding:16px 16px 14px;border-radius:14px}
+  h2{margin-bottom:.6rem;font-size:11px}
+  h3{margin-top:1.2rem;font-size:10px}
+  .row time{font-size:10px}
+  .sum{font-size:11px}
+  .links{margin-top:.8rem;padding-top:12px;gap:.4rem 1.1rem}
+}
+@media (max-width:380px){nav{padding:12px 10px}nav span a+a{margin-left:.7em}.scenes{margin:-7px 4px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.cue{animation:none}:root,.nogl body::after{transition:none}}
+.gl h1{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.nogl body::before,.nogl body::after{content:"";position:fixed;inset:0 0 auto;height:100vh;height:100lvh;z-index:-1}
+.nogl body::before{background:linear-gradient(#10122c,#3b2f55 40%,#b0705a 60%,#d9a55c 61%,#6e4622)}
+.nogl body::after{background:linear-gradient(#06080d,#10151d 26%,#2c333e 43%,#3a424e 44%,#121a25 44.6%,#0a1018 70%,#030406);opacity:0;transition:opacity .5s}
+.nogl[data-scene=lighthouse] body::after{opacity:1}
+</style>
+</head>
+<body>
+<canvas aria-hidden="true"></canvas>
+<nav><a class="me" href="#top">teja koduru</a><div class="scenes" role="group" aria-label="scene">
+<button type="button" data-scene="wheat" aria-label="wheat field" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22V9.5M12 9.5c-1.3-1.3-1.3-3.7 0-5 1.3 1.3 1.3 3.7 0 5zM12 4.5V2M12 17c-2.8 0-4.2-1.4-4.2-4.2 2.8 0 4.2 1.4 4.2 4.2zm0 0c2.8 0 4.2-1.4 4.2-4.2-2.8 0-4.2 1.4-4.2 4.2zm0-4.6c-2.5 0-3.8-1.3-3.8-3.8 2.5 0 3.8 1.3 3.8 3.8zm0 0c2.5 0 3.8-1.3 3.8-3.8-2.5 0-3.8 1.3-3.8 3.8z"/></svg></button>
+<button type="button" data-scene="lighthouse" aria-label="lighthouse" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21l1-10h3l1 10M5.5 21h10M8.5 11h4M9 8h3v3H9zM9 8l1.5-2L12 8M10.5 6V4.5M8.8 16h3.4M14 8.5l6-2M14 10.5l6 2"/></svg></button>
+</div><span><a href="#history">history</a><a href="#projects">projects</a><a href="#now">now</a><a href="#contact">contact</a></span></nav>
+
+<section id="top">
+  <h1>Teja Koduru</h1>
+  <a class="cue" href="#history">scroll ↓</a>
+</section>
+
+<section id="history">
+  <div class="panel">
+    <h2>History</h2>
+    <h3>Work</h3>
+    <ul class="jobs">
+      <li><span class="row"><b>xAI</b><em>MTS</em><time>now</time></span><span class="sum">Evals, data, infra and post-training for Grok 4.5, 4.6, 4.7&nbsp;and&nbsp;4.8.</span></li>
+      <li><span class="row"><b>MIT Lincoln Lab</b><em>controls intern</em><time>summer 2025</time></span><span class="sum">Controls and embedded systems for defense research.</span></li>
+      <li><span class="row"><b>SpaceX</b><em>avionics intern</em><time>spring 2025</time></span><span class="sum">Flight software and avionics for Falcon 9.</span></li>
+      <li><span class="row"><b>Kitware</b><em>software intern</em><time>summer 2024</time></span><span class="sum">Long-range threat identification for the Air Force Research Lab.</span></li>
+    </ul>
+    <h3>Education</h3>
+    <ul class="jobs">
+      <li><span class="row"><b>University of Michigan</b></span><span class="sum">Computer engineering + aerospace.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="panel">
+    <h2>Projects</h2>
+    <ul class="jobs">
+      <li><span class="row"><b>MiSpace</b><em>won $10k</em><time>2025</time></span><span class="sum">Wrote a thermodynamic ice model for the Great Lakes. <a href="https://github.com/ElemelonWind/mispace-2025">code ↗</a></span></li>
+      <li><span class="row"><b>LifeLink</b><em>TreeHacks</em><time>2026</time></span><span class="sum">Created an open-source, solar-powered mesh network using ESP32s and a tiny on-device message compression algorithm. <a href="https://github.com/MythicalCow/lifelink">code ↗</a></span></li>
+      <li><span class="row"><b>Gamehawk</b><em>MHacks</em><time>2025</time></span><span class="sum">A hacked 3D printer that plays Word Hunt for me. <a href="https://github.com/TSKoduru/mhacks-gamehawk">code ↗</a></span></li>
+      <li><span class="row"><b>DIALGA</b><em>wearable</em></span><span class="sum">A watch that tells time in binary, designed from scratch. <a href="https://github.com/TSKoduru/DIALGA">code ↗</a></span></li>
+      <li><span class="row"><b>OneVote</b><em>MHacks 16 winner</em></span><span class="sum">A tool for college students to get more involved in local elections. <a href="https://github.com/ElemelonWind/one-vote">code ↗</a></span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="now">
+  <div class="panel">
+    <h2>Now</h2>
+    <ul class="now">
+      <li>riding my Ninja 300 motorcycle</li>
+      <li>trying to meet my Goodreads reading goal</li>
+      <li>learning to sketch landscapes</li>
+    </ul>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="panel">
+    <h2>Say hi</h2>
+    <p>I don't bite, promise.</p>
+    <ul class="links">
+      <li><a href="mailto:tkoduru@umich.edu"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>email</a></li>
+      <li><a href="https://github.com/TSKoduru"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3.1-.4 6.4-1.5 6.4-7A5.4 5.4 0 0 0 20 4.8 5.1 5.1 0 0 0 19.9 1S18.7.7 16 2.5a13.4 13.4 0 0 0-7 0C6.3.7 5.1 1 5.1 1A5.1 5.1 0 0 0 5 4.8a5.4 5.4 0 0 0-1.5 3.8c0 5.4 3.3 6.6 6.4 7a3.4 3.4 0 0 0-.9 2.6V22"/></svg>github</a></li>
+      <li><a href="https://linkedin.com/in/tskoduru"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>linkedin</a></li>
+      <li><a href="https://www.youtube.com/channel/UCPVpYLoGEPTj0m5vAhHjr_w"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z"/></svg>youtube</a></li>
+      <li><a href="https://tkoduru.tech/TKoduru_Resume.pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>resume</a></li>
+    </ul>
+  </div>
+  <footer>© 2026 Teja Koduru</footer>
+</section>
+
+<script>
+(() => {
+const root = document.documentElement;
+const secs = [...document.querySelectorAll("section")];
+const navLinks = [...document.querySelectorAll("nav span a")];
+const spy = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) navLinks.forEach(a => a.classList.toggle("on", a.hash === "#" + e.target.id));
+}), { rootMargin: "-50% 0px -50% 0px" });
+secs.forEach(s => spy.observe(s));
+const pastHero = () => root.classList.toggle("past-hero", scrollY > innerHeight * .5);
+
+const toggles = [...document.querySelectorAll(".scenes button")];
+let swap = () => {};
+const mark = () => toggles.forEach(b => b.setAttribute("aria-pressed", b.dataset.scene === root.dataset.scene));
+function choose(id) {
+  if (id === root.dataset.scene) return;
+  applyScene(id);
+  mark();
+  try { localStorage.setItem("scene", id); } catch (e) {}
+  const url = new URL(location.href);
+  if (url.searchParams.has("scene")) url.searchParams.set("scene", id), history.replaceState(history.state, "", url);
+  swap(id);
+}
+mark();
+toggles.forEach((b, i) => {
+  b.addEventListener("click", () => choose(b.dataset.scene));
+  b.addEventListener("keydown", e => {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    e.preventDefault();
+    toggles[1 - i].focus();
+    choose(toggles[1 - i].dataset.scene);
+  });
+});
+
+const cv = document.querySelector("canvas");
+const gl = cv.getContext("webgl2", { alpha: false, antialias: false, depth: false, stencil: false, powerPreference: "low-power" });
+root.classList.add(gl ? "gl" : "nogl");
+if (!gl) return addEventListener("scroll", pastHero, { passive: true });
+
+const still = matchMedia("(prefers-reduced-motion: reduce)");
+const mouse = matchMedia("(hover: hover) and (pointer: fine)");
+const h1 = secs[0].querySelector("h1");
+
+const IDLE_FPS = 24, COLUMNS = 420, OMEGA = .42, FADE = 560;
+
+const smooth = (a, b, v) => (v = Math.min(1, Math.max(0, (v - a) / (b - a))), v * v * (3 - 2 * v));
+const hash = (x, y) => {
+  let h = Math.imul(x, 374761393) + Math.imul(y, 668265263);
+  h = Math.imul(h ^ h >>> 13, 1274126177);
+  return ((h ^ h >>> 16) >>> 0) / 4294967296;
+};
+
+// a tileable 256×256 fbm (each octave wraps), behind every noise lookup in the shaders
+const noise = new Float32Array(65536);
+for (let y = 0; y < 256; y++) for (let x = 0; x < 256; x++) {
+  let s = 0, n = 0;
+  for (let f = 4, a = .5; f <= 64; f *= 2, a /= 2) {
+    const u = x * f / 256, v = y * f / 256, i = u | 0, j = v | 0, fu = u - i, fv = v - j;
+    const su = fu * fu * (3 - 2 * fu), sv = fv * fv * (3 - 2 * fv), i1 = (i + 1) % f, j1 = (j + 1) % f;
+    const k = f * 31, A = hash(i + k, j), B = hash(i1 + k, j), C = hash(i + k, j1), E = hash(i1 + k, j1);
+    s += a * (A + (B - A) * su + (C - A) * sv + (A - B - C + E) * su * sv);
+    n += a;
+  }
+  noise[y << 8 | x] = s / n;
+}
+// the nearest colour of a scene's palette (16 hues × 5 luminance levels) for every 5-bit-per-channel colour
+function lutOf(hues) {
+  const PAL = hues.flatMap(h => [.26, .4, .56, .76, 1].map(l => h.map(c => c * l))), lut = new Uint8Array(32768 * 4);
+  for (let i = 0; i < 32768; i++) {
+    const r = ((i & 31) + .5) / 32, g = ((i >> 5 & 31) + .5) / 32, b = ((i >> 10) + .5) / 32;
+    let best = PAL[0], bd = 9;
+    for (const p of PAL) {
+      const d = .3 * (p[0] - r) ** 2 + .5 * (p[1] - g) ** 2 + .2 * (p[2] - b) ** 2;
+      if (d < bd) bd = d, best = p;
+    }
+    lut.set([best[0] * 255, best[1] * 255, best[2] * 255, 255], i * 4);
+  }
+  return lut;
+}
+
+const VS = `#version 300 es
+void main() { gl_Position = vec4(gl_VertexID == 1 ? 3. : -1., gl_VertexID == 2 ? 3. : -1., 0., 1.); }`;
+
+// Scene pass: one fragment per cell. c is in reference cells (K fine cells each), the grid the scenes were designed on,
+// so the picture keeps its proportions at any density; per-cell detail (stalks, rain, stars, dither) uses the fine grid x, y.
+const HEAD = `#version 300 es
+precision highp float;
+precision highp int;
+precision highp sampler3D;
+uniform sampler2D N, M;
+uniform sampler3D L;
+uniform vec2 G;
+uniform float K, T, HZ;
+uniform vec3 CUR;
+uniform vec4 TOD, NAME, TR[16], RP[4], MS[3], CL[4];
+out vec4 o;
+
+const float BAYER[16] = float[16](0., 8., 2., 10., 12., 4., 14., 6., 3., 11., 1., 9., 15., 7., 13., 5.);
+
+// big: highlights get an extra-large dot; open: sky; solid: the lighthouse scene's cliff, tower and shore; clr: inside a clearing
+float x, y, Wr, Hr, hz, cx, night, big = 0., open = 0., solid = 0., clr;
+vec2 c;
+vec3 col;
+
+float S(vec2 p) { return texture(N, (p + .5) / 256.).r; }
+float sm(float a, float b, float v) { v = clamp((v - a) / (b - a), 0., 1.); return v * v * (3. - 2. * v); }
+float hash(vec2 p) {
+  uvec2 q = uvec2(ivec2(p) + 65536);
+  uint h = q.x * 374761393u + q.y * 668265263u;
+  h = (h ^ (h >> 13)) * 1274126177u;
+  return float(h ^ (h >> 16)) / 4294967296.;
+}
+float seg(vec2 p, vec2 b) { return length(p - b * clamp(dot(p, b) / dot(b, b), 0., 1.)); }
+// distance in fine cells from p to a bird's wings, which reach out to (±w.x, w.y)
+float wings(vec2 p, vec2 w) { return min(seg(p, vec2(-w.x, w.y)), seg(p, w)) * K; }
+// the pointer trail and ripples at ground point g: x = strength, y = sideways push
+vec2 touch(vec2 g) {
+  vec2 w = vec2(0);
+  for (int i = 0; i < 16; i++) {
+    vec4 p = TR[i];
+    if (p.w <= 0.) continue;
+    vec2 d = (g - p.xy) / (p.y * .2);
+    float e = exp(-dot(d, d)) * p.w;
+    w += vec2(e, e * p.z);
+  }
+  for (int i = 0; i < 4; i++) {
+    vec4 r = RP[i];
+    if (r.w <= 0.) continue;
+    vec2 d = g - r.xy;
+    float k = (length(d) - r.z) / (r.y * .1 + r.z * .25);
+    float e = exp(-k * k) * r.w;
+    w += vec2(e, e * sign(d.x) * .6);
+  }
+  return w;
+}
+// 1 inside the clearing behind a text block (CL: rectangles in fine cells), fading out past an edge that wobbles with noise moving with the block
+float clearing() {
+  float k = 0.;
+  for (int i = 0; i < 4; i++) {
+    vec4 r = CL[i];
+    if (r.z <= r.x) continue;
+    vec2 m = (r.xy + r.zw) * .5 / K, q = abs(c - m) - (r.zw - r.xy) * .5 / K;
+    float d = length(max(q, 0.)) + min(max(q.x, q.y), 0.) + (S((c - m) * .8 + float(i) * 37.) - .5) * 7.;
+    k = max(k, sm(9., -2., d));
+  }
+  return k;
+}
+void begin() {
+  x = floor(gl_FragCoord.x);
+  y = G.y - 1. - floor(gl_FragCoord.y);
+  c = vec2(x, y) / K;
+  Wr = G.x / K; Hr = G.y / K; hz = HZ / K; cx = Wr * .5; clr = clearing();
+}
+void firefly();
+void encode();
+`;
+
+const TAIL = `
+void firefly() {
+  if (CUR.z <= 0.) return;
+  vec2 q = (vec2(x, y) - CUR.xy) / K;
+  float dd = length(q), a = CUR.z, tw = .8 + .2 * sin(T * 7.);
+  col *= 1. - .7 * a * exp(-pow((dd - 2.3) / .9, 2.)); // a dark ring keeps it visible on bright patches
+  col *= 1. + .4 * a * exp(-dd * dd / 40.);
+  col += FLY0 * a * tw * (1.1 * exp(-dd * dd * .6) + .09 * exp(-dd / 3.));
+  float arm = 1.5 + .9 * tw, spark = max(sm(arm, 0., abs(q.x)) * sm(.45, .1, abs(q.y)), sm(arm, 0., abs(q.y)) * sm(.45, .1, abs(q.x)));
+  if (spark > .3 || dd < .45) col = mix(col, FLY1, a), big = max(big, step(.5, a) * step(dd, .6));
+}
+
+// Brightness picks the dot size (dithered); a small dot is drawn brighter than a big one so gradients stay smooth.
+// Alpha is the dot size in steps of 60/255; its two low bits flag open sky (1) and solid ground (2) for the click handler.
+void encode() {
+  int bi = (int(y) & 3) * 4 + (int(x) & 3);
+  float pk = max(col.r, max(col.g, col.b)), lv = min(pk, 1.), flags = open + 2. * solid;
+  float st = big > .5 && pk > .4 ? 4. : min(3., floor(lv * 3. + BAYER[bi] / 16. - .47 + .5));
+  if (st < 1. || pk < .01) { o = vec4(0, 0, 0, flags / 255.); return; }
+  float sc = st > 3.5 ? 1. / pk : min(1., max(.32, (lv + .05) / (st < 1.5 ? .3 : st < 2.5 ? .6 : 1.))) / pk;
+  vec3 dc = col * sc + vec3(BAYER[bi ^ 5], BAYER[bi ^ 10], BAYER[bi ^ 15]) / 160. - .047;
+  o = vec4(texture(L, clamp(dc, 0., 1.)).rgb, (st * 60. + flags) / 255.);
+}`;
+
+const WHEAT = `
+uniform vec3 SUN, FL;
+const float STOP[6] = float[6](0., .3, .55, .74, .88, 1.);
+const vec3 DAY[6] = vec3[6](vec3(.06, .08, .25), vec3(.15, .19, .45), vec3(.33, .31, .57), vec3(.6, .41, .53), vec3(.72, .49, .41), vec3(.78, .58, .42));
+const vec3 DUSK[6] = vec3[6](vec3(.04, .04, .16), vec3(.1, .09, .3), vec3(.24, .14, .38), vec3(.5, .2, .34), vec3(.78, .3, .24), vec3(.9, .42, .24));
+const vec3 NIGHT[6] = vec3[6](vec3(.01, .015, .05), vec3(.02, .03, .09), vec3(.035, .045, .13), vec3(.05, .065, .17), vec3(.07, .085, .2), vec3(.1, .11, .23));
+const vec2 FLOCK[5] = vec2[5](vec2(0), vec2(-4, -2), vec2(-8, -4), vec2(-4, 2), vec2(-8, 4));
+const vec3 FLY0 = vec3(1., .86, .42), FLY1 = vec3(1., .97, .82);
+
+vec3 sky(float t) {
+  vec3 a = DAY[0], b = DUSK[0], c = NIGHT[0];
+  for (int i = 1; i < 6; i++) {
+    float k = clamp((t - STOP[i - 1]) / (STOP[i] - STOP[i - 1]), 0., 1.);
+    a = mix(a, DAY[i], k); b = mix(b, DUSK[i], k); c = mix(c, NIGHT[i], k);
+  }
+  return mix(mix(a, b, TOD.x), c, TOD.y);
+}
+// g is a point on the ground: (sideways, depth), both in camera heights
+float gust(vec2 g) {
+  float u = (g.x - T * .3) * 30., v = g.y * 30.;
+  return sm(.42, .68, S(vec2(u, v)) * .7 + S(vec2(u * 1.7 + T * .9, v * 1.7 + 61.)) * .3);
+}
+
+float U, warm, glow, sunD, sunK;
+vec2 sun;
+
+void dome() {
+  col = sky(min(1., c.y / hz));
+  col += ((.3 * exp(-sunD / (Hr * .04)) + .18 * exp(-sunD / (Hr * .3))) * glow
+    + exp(-abs(hz - c.y) / (Hr * .035)) * (.08 + .2 * exp(-abs(c.x - sun.x) / (Wr * .25))) * (.3 + .7 * glow))
+    * vec3(1., .62 - .2 * warm, .3 - .12 * warm);
+  float disc = sm(SUN.z + .8, SUN.z - .8, sunD * K);
+  col += disc * 2. * vec3(1., 1. - .3 * warm, .92 - .45 * warm);
+  big = disc;
+  float moon = sm(.5, .9, night);
+  if (moon > 0.) {
+    vec2 mc = vec2(Wr * .2, Hr * .17);
+    float mr = max(2.2, U * .022), md = distance(c, mc);
+    float lit = sm(mr + .5 / K, mr - .5 / K, md) * sm(mr * .8 - .5 / K, mr * .8 + .5 / K, distance(c, mc + vec2(mr * .45, -mr * .2)));
+    col += moon * (lit * vec3(1.05, 1., .9) + exp(-md / (Hr * .05)) * vec3(.07, .08, .13));
+    big = max(big, lit * moon);
+  }
+}
+
+void meteors() {
+  for (int i = 0; i < 3; i++) {
+    vec4 m = MS[i];
+    if (m.w <= 0.) continue;
+    vec2 o0 = m.xy / K, dir = vec2(cos(m.z), sin(m.z)), q = (c - o0) * K;
+    float arm = 1. + 7. * sm(0., .2, m.w), gn = 1. - sm(.1, .55, m.w);
+    col += vec3(1., .95, .85) * gn * (exp(-abs(q.y) * 2.) * sm(arm, 0., abs(q.x)) + exp(-abs(q.x) * 2.) * sm(arm, 0., abs(q.y)));
+    float trav = Wr * .45 * min(m.w, 1.25), tail = max(.01, min(trav, Wr * .12));
+    vec2 r = c - o0 - dir * trav;
+    float along = -dot(r, dir), perp = abs(dot(r, vec2(-dir.y, dir.x))) * K;
+    if (along > -1. && along < tail) {
+      float k = pow(1. - clamp(along / tail, 0., 1.), 2.) * exp(-perp * perp) * (1. - sm(.75, 1.25, m.w));
+      col += vec3(1., .93, .8) * k * 1.6;
+      big = max(big, step(.6, k) * step(along * K, 1.5));
+    }
+  }
+}
+
+void heavens() {
+  float h = hz - c.y;
+  open = 1.;
+  float aur = TOD.w * sm(.6, 1., night);
+  if (aur > .01) {
+    float base = hz * (.5 + .08 * sin(c.x / Wr * 6.3 + T * .07) + .05 * sin(c.x / Wr * 15. - T * .11)), up = base - c.y;
+    if (up > -3. && up < hz * .45) {
+      float band = sm(.25, .85, .5 + .5 * sin(c.x / Wr * 7. - T * .06 + S(vec2(c.x * .15, 21.)) * 6.));
+      float rays = .35 + .65 * sm(.3, .7, S(vec2(c.x * 2.2 + T * 2., 40.)));
+      col += aur * band * rays * sm(-3., 1., up) * exp(-max(up, 0.) / (hz * .13))
+        * mix(vec3(.13, .6, .42), vec3(.5, .27, .85), sm(0., hz * .25, up));
+    }
+  }
+  // clouds: a flat deck in perspective, lit on the side facing the sun
+  float cover = 0., fade = sm(Hr * .06, Hr * .17, h);
+  if (fade > 0.) {
+    float v = hz / h * 60., u = (c.x - cx) / h * 60. + T * 4.;
+    float dn = S(vec2(u, v)) * .75 + S(vec2(u * 2.3 - T * 3., v * 2.3 + 91.)) * .25;
+    float cc = sm(.5, .62, dn) * fade;
+    if (cc > 0.) {
+      float len = length(vec2((sun.x - cx) / hz, 1.));
+      float lit = clamp(.5 + (dn - S(vec2(u + (sun.x - cx) / hz / len * 6., v + 6. / len))) * 7., 0., 1.);
+      vec3 cl = vec3(.32 + .15 * sunK + (.68 - .15 * sunK) * lit, .26 + .08 * sunK + (.32 + .24 * sunK) * lit, .46 + (.09 - .1 * sunK) * lit)
+        * (.6 + .4 * sm(0., .5, h / hz));
+      cl = mix(cl * mix(vec3(1), vec3(1., .72, .7), warm), vec3(.08, .09, .16) + lit * vec3(.07, .07, .1), night);
+      col += (cl - col) * cc + cc * (1. - cc) * 4. * sunK * sunK * glow * vec3(1., .8, .5);
+      cover = cc;
+      big *= 1. - cc;
+    }
+  }
+  float hs = hash(vec2(x, y) + 3.);
+  if (TOD.w > 0. && hs > .993)
+    col += vec3(.8, .85, 1.) * TOD.w * (.55 + .45 * sin(T * (1. + fract(hs * 89.) * 3.) + hs * 900.)) * (.4 + (hs - .993) * 130.) * (1. - cover) * sm(0., .25, h / hz);
+  if (FL.z > 0.) for (int i = 0; i < 5; i++) {
+    vec2 b = c - FL.xy / K - FLOCK[i];
+    if (abs(b.x) > 2.5 || abs(b.y) > 2.) continue;
+    if (wings(b, vec2(1.7, -.7 * sin(T * 8. + float(i) * 1.7) - .2)) < .6) col *= 1. - .9 * FL.z;
+  }
+  meteors();
+}
+
+void horizon() {
+  float h = hz - c.y;
+  float ridge = max(.7, (S(vec2(c.x * .5, 9.)) - .38) * 18.);
+  float clump = S(vec2(c.x * 1.5 + 70., 33.)) - .5, trees = 0., lit = 0.;
+  if (clump > 0.) {
+    float j0 = floor(c.x / 3.);
+    for (float j = j0 - 1.; j <= j0 + 1.; j++) {
+      float tx = (j + .5 + .4 * (hash(vec2(j, 41.)) - .5)) * 3., r = 1.6 + 1.3 * hash(vec2(j, 42.)), dx = c.x - tx;
+      float top = clump * 24. * (.55 + .6 * hash(vec2(j, 43.))) - r + sqrt(max(0., r * r - dx * dx)) * 1.15;
+      if (abs(dx) < r && top > trees) trees = top, lit = sm(-.4, .9, dx / r * sign(sun.x - tx));
+    }
+    trees += (S(vec2(c.x * 23., 80.)) - .5) * 1.2;
+  }
+  float LT = Wr * .2, TH = max(7., U * .085), e = .78 + S(c * 6.) * .5;
+  vec2 q = vec2(c.x - LT, -h) / TH;
+  bool oak = abs(q.x) < 1.3 && (length(vec2(q.x, (q.y + .78) * 1.5)) < .5 * e || length(vec2(q.x + .5, (q.y + .62) * 1.5)) < .38 * e
+    || length(vec2(q.x - .5, (q.y + .64) * 1.5)) < .4 * e || (abs(c.x - LT) < .7 && h < TH * .5));
+  if (h <= trees || oak) {
+    float crown = oak ? sm(.2, -.3, q.y + .8 + .3 * (S(c * 4.) - .5)) * sm(-.3, .5, q.x * sign(sun.x - LT)) : sm(1.8, 0., trees - h) * (.35 + .65 * lit);
+    col = mix(vec3(.26, .35, .23), vec3(.04, .045, .09), night) * (.3 + 1.5 * S(c * 3.))
+      + glow * (1. - night) * (.85 + .8 * sunK) * crown * vec3(.54, .72, .46);
+    big = 0.;
+  } else if (h <= ridge) {
+    col = vec3(.38, .3, .46) * (1. - .6 * night) + sunK * .6 * glow * vec3(1., .7, .45);
+    big = 0.;
+  } else heavens();
+}
+
+void field() {
+  float dy = c.y - hz + .5 / K, p = dy / (Hr - hz);
+  vec2 g = vec2((c.x - cx) / dy, Hr * .4 / dy), tw = touch(g);
+  float gw = (gust(g) * sm(0., .15, p) + tw.x) * (1. - .8 * clr);
+  float sway = (.6 * sin(T * 1.6 + c.x * .07 + c.y * .23) + 2.5 * min(gw, 1.2) + 4. * tw.y) * (.3 + p) * (1. - .85 * clr);
+  float sx = x + floor(sway * K + .5), dash = (1. + 2. * p) * K;
+  float st = hash(vec2(sx, floor((y + hash(vec2(sx, 7.)) * 4. * K) / dash))) - .5;
+  float lb = (.9 + st * (.2 + .15 * p)) * (.74 + (.5 + .4 * night) * min(gw, 1.3) * (1. - .4 * p)) * (1. - .3 * sm(.55, 1.05, p))
+    * (1. + .35 * min(tw.x, 1.));
+  vec3 fc = mix(mix(vec3(1., .82 - .26 * p, .46 - .28 * p), vec3(.95, .58 - .2 * p, .3 - .15 * p), warm), vec3(.27, .32, .5), night);
+  col = mix(col, fc * lb + sunK * (1. - p) * (1. - p) * .6 * glow * vec3(1., .75, .4), 1. - .4 * (1. - sm(0., .1, p)));
+  big = 0.;
+}
+
+// NAME: x how far it has sunk, y the foot of its lowest letter, z cap height (fine cells), w opacity.
+void name() {
+  if (NAME.w <= 0.) return;
+  float above = NAME.y - y, rel = (above + NAME.x) / NAME.z;
+  if (rel < -.25 || rel > 3.2) return;
+  float bd = max(.5, (NAME.y - HZ) / K);
+  vec2 bg = vec2((c.x - cx) / bd, Hr * .4 / bd), bt = touch(bg);
+  float bw = min(gust(bg) + bt.x, 1.2);
+  float lean = (1.1 * bw + 1.6 * bt.y + .3 * sin(T * 1.3 + c.x * .05)) * clamp(rel, 0., 1.4) * K;
+  vec2 m = texture(M, (vec2(x - lean, y - NAME.x) + .5) / G).rg;
+  float sx = floor(x - lean * .6), dip = 1. - .45 * min(bw, 1.), deep = sm(0., 1.2, NAME.x / NAME.z);
+  float front = NAME.z * .12 * (S(vec2(sx / K * .3 - T * 1.5, 5.)) - .5) * dip;
+  float thin = hash(vec2(sx, 11.)) < .2 ? NAME.z * (.1 + .3 * hash(vec2(sx, 12.))) * dip : 0., thick = NAME.z * deep * (.2 + .8 * hash(vec2(sx, 13.))) * dip;
+  float base = sm(front - K * .5, front + K * .5, above) * NAME.w, vis = base * step(thick, above) * (1. - .5 * step(above, thin));
+  float shine = 1. + .35 * exp(-pow((x + y * .5 - mod(T * 26. * K, G.x * 5.) + G.x) / (4. * K), 2.));
+  vec3 nc = mix(vec3(1., .92, .78), vec3(.78, .82, 1.), night * .6) * (.95 + .12 * bw) * shine;
+  col *= 1. - .75 * m.g * mix(base, vis, .4);
+  col = mix(col, nc, m.r * vis);
+  big = max(big, step(.5, m.r * vis));
+}
+
+void motes() {
+  float pollen = glow * (1. - night);
+  if (pollen > .01 && abs(c.y - hz + Hr * .05) < Hr * .22) for (int l = 0; l < 2; l++) {
+    float sz = 18. + float(l) * 9., fl = float(l) * 40.;
+    vec2 q = c - vec2(T * (1.2 + float(l) * 1.3), 0.), id = floor(q / sz);
+    vec2 pos = (id + .15 + .7 * vec2(hash(id + fl), hash(id + fl + 13.))) * sz + vec2(0., 2.5 * sin(T * .6 + hash(id + fl + 7.) * 6.3));
+    float tw = sin(T * 2.2 + hash(id + fl + 3.) * 30.);
+    if (tw > .2 && floor(q * K) == floor(pos * K)) col = mix(col, vec3(1., .93, .7), pollen), big = step(.8, tw) * pollen;
+  }
+  float flies = sm(.55, 1., night);
+  if (flies > .01 && c.y > hz - Hr * .15) {
+    vec2 q = c / 15., id = floor(q);
+    float h1 = hash(id + 91.), h2 = hash(id + 57.);
+    vec2 pos = id + .5 + .3 * vec2(sin(T * (.3 + h1 * .4) + h2 * 6.3), sin(T * (.23 + h2 * .3) + h1 * 6.3));
+    float dd = length(q - pos) * 15., pulse = flies * sm(.2, 1., sin(T * (.9 + h1) + h2 * 20.)) * step(.4, h2);
+    col += vec3(1., .88, .45) * pulse * (1.4 * exp(-dd * dd * 1.2) + .25 * exp(-dd * .8));
+    big = max(big, step(.6, pulse * exp(-dd * dd * 1.2)));
+  }
+}
+
+void main() {
+  begin();
+  U = min(Hr, Wr * .62); warm = TOD.x; night = TOD.y; glow = TOD.z;
+  sun = SUN.xy / K; sunD = distance(c, sun); sunK = exp(-sunD / (Wr * .22));
+  dome();
+  if (y < HZ) horizon(); else field();
+  name();
+  motes();
+  if (clr > 0.) col *= (1. - .66 * clr) * (hash(vec2(x, y) + 5.) < .4 * clr ? .3 : 1.), big *= 1. - clr;
+  firefly();
+  encode();
+}`;
+
+// The lighthouse: the camera at the origin on the cliff edge, y up, looking out along z; the sea is the plane y = -1.
+const CLIFF = `
+uniform vec3 BM;
+uniform vec4 BB[2];
+const float PI = 3.14159265, TILT = .16; // TILT: how steeply the beam dips toward the sea
+const vec3 YEL = vec3(1., .8, .42), FLY0 = vec3(.45, .62, .9), FLY1 = vec3(.85, .92, 1.);
+// the far shore, a line on the water (x, z) from its tip to a point off to the right, and where the jetty leaves it
+const vec2 CA = vec2(5.4, 12.), CB = vec2(3.2, 3.), JT = CA + .6 * (CB - CA);
+// boats: x, z on the water, half-length, kind (0 trawler, 1 sailboat, 2 skiff)
+const vec4 BOATS[5] = vec4[5](vec4(1.37, 4.7, .22, 0.), vec4(-1.7, 3.6, .18, 1.), vec4(JT.x - 1.3, JT.y - .35, .16, 2.), vec4(15., 42., .9, 0.), vec4(-.55, 2.77, .08, 2.));
+
+float F, dusk, storm, moon, flash;
+vec2 lamp, moonc;
+vec3 Lw; // the lamp in the world
+float LX, LY, lr, wT, wB, lip0, flare, shine = 0.; // lighthouse x, lamp height, lamp room half-height, tower half-widths at top and foot; the cliff edge; lamp facing us; beam light in the air here
+
+vec3 sky(float t) {
+  vec3 top = mix(vec3(.085, .095, .12), vec3(.025, .032, .055), night);
+  vec3 mid = mix(vec3(.15, .165, .19), vec3(.045, .055, .085), night);
+  vec3 low = mix(vec3(.42, .44, .47), vec3(.11, .13, .17), night);
+  return (t < .65 ? mix(top, mid, t / .65) : mix(mid, low, sm(.65, 1., t))) * (1. - .25 * storm) * (.85 + .25 * dusk) + moon * t * vec3(.03, .04, .07);
+}
+// how lit a point p (x, z) is by the two opposed beams sweeping round: bright as one passes, then fading over tail radians
+float swept(vec2 p, float tail) {
+  float d = mod(BM.x - atan(p.x - Lw.x, p.y - Lw.z), PI);
+  return max(exp(-pow(min(d, PI - d) / .07, 2.)), .85 * exp(-d / tail));
+}
+
+// the top of the cliff edge in the foreground, rising into a knoll at the lighthouse's foot
+float edge(float px) {
+  return lip0 - Hr * .07 * exp(-pow((px - LX) / (wB * 2.6), 2.)) + 2.2 * (S(vec2(px * .2, 31.)) - .5) + .9 * (S(vec2(px * 1.1, 37.)) - .5);
+}
+bool lip() {
+  float top = edge(c.x), d = c.y - top;
+  if (d < -3.6) return false;
+  if (d < 0.) {
+    float up = -d, bend = up * K * (.7 + .35 * sin(T * 2.3 + c.x * .3) + .3 * storm);
+    float h = hash(vec2(floor(x + bend), 5.)), tall = sm(.25, .7, S(vec2(c.x * .45, 9.))) * 3.4;
+    if (h < .5 || up > (h - .5) * 2. * tall) return false;
+    col = vec3(.04, .045, .055) + vec3(.12, .13, .15) * (1. - night * .6) * up / tall;
+  } else {
+    col = vec3(.1, .11, .13) * (.45 + S(c * 1.4) * S(c * .37 + 7.) * 1.6) * (1. - .35 * sm(0., 8., d)) * (1. - .45 * night);
+    col += step(.95, hash(vec2(x, y) + 9.)) * vec3(.09, .095, .1) + vec3(.26, .28, .32) * sm(1.1, 0., d) * (1. - .5 * night);
+  }
+  col += flash * .06;
+  solid = 1.;
+  big = 0.;
+  return true;
+}
+
+bool tower() {
+  float dx = c.x - LX, ax = abs(dx), gy = LY + lr;
+  if (ax > wB + .5 || c.y < LY - lr * 3.6) return false;
+  if (c.y < LY - lr) {
+    // cap: dome, vent ball, lightning rod
+    float h = LY - lr - c.y, dr = lr * 1.3;
+    if (!(ax < wT * .92 * sqrt(max(0., 1. - h * h / (dr * dr))) || distance(c, vec2(LX, LY - lr - dr - .4)) < .55 || (ax * K < .6 && h < dr + 2.4))) return false;
+    col = vec3(.025, .03, .04) + vec3(.06, .07, .09) * sm(-.2, .9, dx / wT) + YEL * (.04 + .2 * flare) * sm(dr, 0., h);
+  } else if (c.y < gy) {
+    // lamp room behind the gallery railing
+    if (ax > wT * 1.3) return false;
+    bool rail = c.y > gy - 1.3 && (abs(c.y - gy + 1.3) * K < .55 || mod(x, 3.) < 1.);
+    if (ax > wT * .8 && !rail) return false;
+    vec2 q = (c - lamp) / lr;
+    float core = exp(-dot(q, q) * 2.2), bar = abs(fract(dx / (wT * .55) + .5) - .5) * wT * .55 * K;
+    col = rail || bar < .55 ? vec3(.03, .034, .045) + YEL * .05 * flare : YEL * (.34 + .35 * flare + core * (1.3 + 2.2 * flare));
+    big = step(.6, core) * step(.55, bar) * (rail ? 0. : 1.);
+  } else if (c.y < gy + .9) {
+    // gallery deck
+    if (ax > wT * 1.32) return false;
+    col = vec3(.04, .045, .06) + vec3(.07) * sm(-.3, 1., dx / wT) + YEL * .08 * flare;
+  } else {
+    float t = (c.y - gy) / (Hr - gy), hw = mix(wT * 1.02, wB, pow(t, .8));
+    if (ax > hw) return false;
+    float u = dx / hw, cs = sqrt(max(0., 1. - u * u));
+    float yy = c.y - (hz - c.y) / F * hw * .9 * (1. - cs); // the courses curve as you look up or down at them
+    float band = step(.5, fract(yy / max(7., Hr * .1) + .3));
+    float side = .2 + .8 * sm(-.85, .9, u); // lit from the open sea to the right
+    col = mix(vec3(.32, .35, .4), vec3(.055, .06, .075), band) * side * (1. - .35 * night) * (.75 + .5 * S(vec2(c.x * 3., yy * .9)));
+    col *= 1. - .3 * step(.88, fract(yy * K / 2.3)); // mortar between the stone courses
+    // stair windows; a lantern swings in the fourth, throwing its light about the stone
+    float wp = max(5., Hr * .085), ww = .18 / 2.2 * hw;
+    bool lw = floor(yy / wp) == 3.;
+    vec2 wq = vec2(u * 2.2, fract(yy / wp) - .5);
+    float win = step(abs(wq.x - .2), lw ? .26 : .18) * step(abs(wq.y), (lw ? .15 : .1) / max(1., wp / 7.));
+    float swing = (sin(T * 1.9 + .8 * sin(T * .5)) * (.6 + .5 * storm) + (S(vec2(T * .7, 9.)) - .5) * 1.4) * ww * 1.8;
+    float flick = .85 + .15 * S(vec2(T * 7., 4.)), lx = dx - .2 / 2.2 * hw - swing, ly = yy - 3.5 * wp;
+    col += YEL * flick * .9 * exp(-length(vec2(lx, ly * 1.3)) / (ww * 3. + 1.5)) * cs * (1. - .4 * clr);
+    if (win > 0.) {
+      float g = exp(-lx * lx / max(ww * ww * .3, .4));
+      col = lw ? YEL * flick * (.7 + 1.4 * g) : vec3(.01, .012, .016);
+      if (lw) big = step(.5, g);
+    }
+    col += vec3(.14, .16, .2) * sm(.82, .99, u) * (1. - .3 * night) + YEL * flare * .12 * sm(Hr * .25, 0., c.y - gy) * cs;
+  }
+  col += flash * .05;
+  solid = 1.;
+  return true;
+}
+
+// a forked bolt from a click in the sky; the gaps in its age make it flicker
+float jag(float s, float yy) { return (S(vec2(s * 9.1, yy * .45)) - .5) * 16. + (S(vec2(s * 3.7 + 60., yy * 1.9)) - .5) * 4.; }
+void bolts() {
+  for (int i = 0; i < 3; i++) {
+    vec4 m = MS[i];
+    if (m.w <= 0. || m.w > .4 || (m.w > .07 && m.w < .13) || (m.w > .22 && m.w < .29)) continue;
+    vec2 o0 = m.xy / K;
+    float bx = o0.x + jag(m.z, c.y) - jag(m.z, o0.y), d = abs(c.x - bx) * K;
+    float fy = c.y - o0.y, fx = bx + fy * (fract(m.z * 7.3) > .5 ? .8 : -.8) + jag(m.z + 5., c.y) * .4 - jag(m.z + 5., o0.y) * .4;
+    float df = fy > 0. && fy < (hz - o0.y) * .6 ? abs(c.x - fx) * K + fy / (hz - o0.y) * 2. : 99.;
+    col += vec3(.3, .33, .45) * (exp(-d / 4.) + .5 * exp(-df / 3.));
+    if (d < .8 || df < .55) col = vec3(1.1, 1.15, 1.3), big = 1.;
+  }
+}
+
+void heavens() {
+  open = 1.;
+  float h = max(hz - c.y, .3);
+  col = sky(c.y / hz);
+  float v = hz / h * 50., u = (c.x - cx) / h * 50. + T * 2.5;
+  float dn = S(vec2(u, v + T * .8)) * .65 + S(vec2(u * 2.3 - T * 2., v * 2.3 + 91.)) * .35;
+  float roll = sm(.38 - .12 * storm, .7, dn), edgeL = sm(.5, .35, abs(dn - .5)) * .5;
+  vec3 cl = (mix(vec3(.25, .27, .31), vec3(.055, .062, .08), roll) * (1. - .25 * storm) + edgeL * vec3(.06, .065, .075)) * (1. - .65 * night);
+  col = mix(col, cl, sm(Hr * .005, Hr * .08, h) * (.75 + .25 * storm));
+  // rain curtains out at sea
+  float cur = sm(.45, .75, S(vec2(c.x * .5 + c.y * .2 - T * .4, 17.))) * sm(hz * .5, hz * .1, h) * (.3 + .7 * storm);
+  col = mix(col, vec3(.07, .08, .095) * (1. - .6 * night), cur * .6);
+  if (moon > 0.) {
+    float mr = max(2.2, F * .022), md = distance(c, moonc), thin = moon * (1. - .75 * roll);
+    col += thin * (sm(mr + .5 / K, mr - .5 / K, md) * vec3(.62, .68, .8) + exp(-md / (Hr * .06)) * vec3(.05, .06, .085));
+    big = max(big, step(.6, thin) * step(md, mr * .7));
+  }
+  col += flash * (.12 + .5 * dn * dn) * vec3(.5, .55, .72);
+  bolts();
+}
+
+bool boat(vec4 b, float id) {
+  float dy = F / b.y, s = b.z * dy;
+  vec2 a = vec2(cx + b.x * dy, hz + dy);
+  if (abs(c.x - a.x) > s * 1.5 || c.y > a.y + s * .4 || c.y < a.y - s * 2.6) return false;
+  float roll = sin(T * 1.1 + id * 2.3) * .09 * (.5 + storm), heave = sin(T * .9 + id) * .1 * (.6 + storm);
+  vec2 q = (c - a) / s - vec2(0., heave);
+  q = vec2(q.x * cos(roll) - q.y * sin(roll), q.x * sin(roll) + q.y * cos(roll));
+  float px = .6 / (K * s), deck = -.3 - .14 * sm(.3, 1., q.x), lit = swept(b.xy, .2) * sm(.4, 2.5, length(b.xy - Lw.xz));
+  bool hull = q.y > deck && q.y < .05 && abs(q.x) < .82 + (q.y - .05) * -.5, rim = hull && q.y < deck + max(.1, px * 1.6);
+  bool foam = abs(q.y - .07) < max(.06, px) && abs(q.x) < 1.05 && hash(vec2(x, y) + floor(T * 5.)) > .4;
+  bool sail = false, part = false, light = false;
+  if (b.w == 0.) {
+    part = (q.x > -.6 && q.x < -.1 && q.y > -.66 && q.y < deck) || (abs(q.x - .2) < px && q.y > -1.35 && q.y < deck);
+    light = distance(q, vec2(.2, -1.38)) < px * 1.6 || (q.y > -.55 && q.y < -.42 && fract(q.x * 5.) < .45 && q.x > -.55 && q.x < -.15);
+  } else if (b.w == 1.) {
+    part = abs(q.x - .05) < px && q.y > -2.3 && q.y < deck;
+    sail = q.y > -2.2 && q.y < -.42 && q.x < .02 && q.x > -.75 * (q.y + 2.2) / 1.78;
+    light = distance(q, vec2(.05, -2.35)) < px * 1.6;
+  } else {
+    part = q.x > -.35 && q.x < .1 && q.y > -.6 && q.y < deck;
+  }
+  if (!(hull || part || sail || light || foam)) return false;
+  col = vec3(.03, .036, .048) + YEL * lit * .2;
+  if (rim || part) col = vec3(.2, .22, .26) * (1. - .45 * night) + YEL * lit * .35;
+  if (sail) col = vec3(.3, .32, .36) * (1. - .45 * night) + YEL * lit * .7;
+  if (foam && !(hull || part || sail)) col = vec3(.42, .46, .52) * (1. - .4 * night);
+  if (light) col = vec3(.75, .82, .95), big = step(.5, s);
+  return true;
+}
+
+// the far shore's cliffs, at s along CA-CB, depth zc, meeting the water at wl
+bool shore(float tx, float s, float zc, float wl) {
+  if (s < 0. || s > 1.) return false;
+  float hc = (.84 + .16 * (S(vec2(c.x * .5, 41.)) - .5)) * sm(0., .12, s), top = hz + F * (1. - hc) / zc;
+  if (c.y < top || c.y > wl) return false;
+  float bed = fract((c.y - top) / max(wl - top, 1.) * 5. + S(vec2(c.x * .7, 3.)) * 1.2);
+  col = vec3(.07, .08, .095) * (.6 + .7 * S(c * 1.7)) * (1. + .7 * step(.82, bed)) * (1. - .5 * night) + vec3(.2, .22, .25) * sm(.9, 0., c.y - top) * (1. - .55 * night);
+  col += YEL * swept(vec2(tx * zc, zc), .2) * .2 * (.5 + S(c * 2.3)) + flash * .04;
+  solid = 1.;
+  return true;
+}
+bool jetty() {
+  float dj = F / JT.y, x0 = cx + (JT.x - 1.6) * dj, x1 = cx + JT.x * dj, deck = hz + dj * .91, wl = hz + dj;
+  if (c.x < x0 || c.x > x1 || c.y < deck - 2.6 || c.y > wl + .2) return false;
+  float lx = x0 + .6;
+  bool post = abs(c.x - lx) * K < .6 && c.y < deck;
+  bool lit = distance(c, vec2(lx, deck - 2.6)) * K < 1.;
+  bool hit = (c.y > deck && c.y < deck + max(.5, 1. / K)) || (c.y > deck && fract((c.x - x0) / (dj * .22)) * dj * .22 * K < .9);
+  if (!(post || lit || hit)) return false;
+  col = lit ? vec3(.7, .78, .9) : (c.y < deck + .5 / K ? vec3(.22, .24, .28) * (1. - .45 * night) : vec3(.03, .035, .045)) + YEL * swept(vec2(JT.x - (x1 - c.x) / dj, JT.y), .2) * .25;
+  big = lit ? 1. : 0.;
+  solid = 1.;
+  return true;
+}
+
+void sea() {
+  float dy = c.y - hz + .5 / K, z = F / dy, p = dy / (lip0 - hz);
+  vec2 g = vec2((c.x - cx) / dy, z), tw = touch(g);
+  // swell and chop; the texture never comes closer than a little under the cliff, so tall screens don't magnify it
+  float zt = z + 1.4, gt = (c.x - cx) / F * zt;
+  float n1 = S(vec2(gt * 5. - T * .3, zt * 8. - T * 1.4)), n2 = S(vec2(gt * 13. + T * .4, zt * 22. - T * 2.8));
+  float swell = .5 + .5 * sin(zt * 3. + gt * .8 - T * 1.3 + n1 * 9.);
+  float wv = .5 + (mix(.5, swell, sm(.02, .3, p) * .6) - .5) * .7 + (n1 - .5) * 1.1 + (n2 - .5) * .9;
+  // short horizontal dashes, longer toward us, light up where a wave tilts toward the sky
+  float dsh = hash(vec2(floor((x + hash(vec2(3., y)) * 211.) / ((1. + 5. * p) * K)), y));
+  float facet = sm(.42, .75, wv + (dsh - .5) * .35);
+  vec3 w = vec3(.08, .11, .15) * (1. - .5 * night) * (.6 + .8 * facet) + sky(clamp(1. - p * .5 + (facet - .5) * .5, 0., 1.)) * mix(1., .55, sm(0., .7, p)) * (.45 + .9 * facet);
+  float wc = S(vec2(gt * 4. + T * .2, zt * 9. - T * 1.1)) + (wv - .5) * .5;
+  float cap = sm(.6 - .14 * storm, .68 - .14 * storm, wc) * step(.3, hash(vec2(x, y) + floor(T * 3.) * 5.));
+  w = mix(w, vec3(.5, .54, .6) * (1. - .5 * night), cap * (.45 + .45 * sm(0., .5, p)));
+  // the beams' sweep, brightest where they come down, and the searchlight's pools on clicked spots (RP)
+  float dl = length(g - Lw.xz), hit = (Lw.y + 1.) / TILT;
+  float pool = 0., bl = (1. - .7 * clr) * swept(g, .12) * (.3 * sm(.4, 2.5, dl) + exp(-pow((dl - hit) / (hit * .5), 2.))) * (1. - .6 * sm(hit, hit * 4., dl));
+  for (int i = 0; i < 4; i++) {
+    vec4 q = RP[i];
+    if (q.w == 0.) continue;
+    vec2 d = (g - q.xy) / (q.y * .07);
+    float e = q.w * exp(-dot(d, d));
+    bl += 1.2 * e, pool += e;
+  }
+  w += YEL * (bl * (.06 + .6 * facet + .5 * cap) + pool * (.55 + 1.1 * wv));
+  if (facet > .55 && hash(vec2(x, y) + floor(T * 8.) * 17.) > 1. - bl * .6) w = YEL * 1.4, big = step(.5, bl);
+  // moon path
+  float mb = exp(-abs(c.x - moonc.x) / (1. + p * Wr * .06)) * moon * (1. - .7 * clr);
+  w += facet * mb * vec3(.28, .33, .45);
+  if (facet > .6 && hash(vec2(x, y) + floor(T * 6.) * 23.) > 1. - mb * .3) w = vec3(.8, .86, .98), big = step(.5, mb);
+  // surf at the foot of the cliff below
+  float le = edge(c.x), sf = sm(.42, .6, S(vec2(c.x * .9 - T * .4, c.y * 1.6 + T * 1.1)) + .35 * sm(le - 3.5, le, c.y)) * sm(le - 9., le - .3, c.y);
+  w = mix(w, vec3(.5, .54, .6) * (1. - .5 * night), sf * .85 * step(.25, hash(vec2(x, y) + floor(T * 4.) * 9.)));
+  w += min(tw.x, 1.5) * (.3 + .6 * facet) * mix(vec3(.36, .4, .46), vec3(.12, .42, .5), night);
+  w += facet * flash * vec3(.2, .22, .3);
+  // the jetty lamp's broken reflection
+  float jd = F / JT.y, jx = cx + (JT.x - 1.6) * jd + .6;
+  if (c.y > hz + jd && c.y < hz + jd * 1.5) w += vec3(.4, .45, .55) * facet * exp(-abs(c.x - jx + (wv - .5) * 1.5) * 1.6) * sm(hz + jd * 1.5, hz + jd, c.y);
+  col = w;
+  // surf along the far shore
+  float tx = (c.x - cx) / F, s = (tx * CA.y - CA.x) / ((CB.x - CA.x) - tx * (CB.y - CA.y)), zc = mix(CA.y, CB.y, s), wl = hz + F / zc, fy = c.y - wl;
+  if (s > 0. && s < 1. && fy > -.2 && fy < 2.2 && hash(vec2(x, y) + floor(T * 4.) * 3.) > fy * .35 + .15 * sin(T * 1.3 + c.x * .3)) col = vec3(.5, .54, .6) * (1. - .45 * night) + YEL * bl * .4;
+  if (!shore(tx, s, zc, wl)) jetty();
+  for (int i = 0; i < 5; i++) if (boat(BOATS[i], float(i))) break;
+}
+
+// light scattered toward the eye (view ray r) from a shaft leaving the lamp along b, which ends where it meets the sea
+float shaft(vec3 r, vec3 b, float smax, float wd) {
+  vec3 w0 = -Lw;
+  float cb = dot(r, b), d = dot(r, w0), e = dot(b, w0), den = max(1. - cb * cb, 1e-5);
+  float sc = (cb * e - d) / den, tc = (e - cb * d) / den;
+  if (tc <= 0. || sc <= 0.) return 0.;
+  float dd = length(w0 + sc * r - tc * b), hit = (Lw.y + 1.) / max(-b.y, .01), wdt = wd * (.012 + tc * .055);
+  return exp(-dd * dd / (wdt * wdt)) / (1. + tc * .45) * sm(smax, smax * .85, sc) * sm(hit * 1.05, hit * .8, tc);
+}
+void beam() {
+  vec3 r = normalize(vec3((c.x - cx) / F, (hz - c.y) / F, 1.));
+  float smax = r.y < 0. ? -1. / r.y : 1e4;
+  for (int i = 0; i < 2; i++) {
+    float a = BM.x + float(i) * PI;
+    shine += shaft(r, normalize(vec3(sin(a), -TILT, cos(a))), smax, 1.);
+  }
+  for (int i = 0; i < 4; i++) {
+    vec4 q = RP[i];
+    if (q.w > 0.) shine += q.w * shaft(r, normalize(vec3(q.x, -1., q.y) - Lw), smax, .5);
+  }
+  shine *= .4 + .6 * storm;
+  float d = distance(c, lamp);
+  col += YEL * (shine * .5 + (.2 + .5 * flare) * exp(-d / 5.) + (.025 + flare * .12) * exp(-d / 28.));
+  big = max(big, step(.9, shine) * step(.5, flare));
+}
+
+// NAME: x how far it has sunk (0-1), y its baseline, z cap height (fine cells), w opacity.
+void name() {
+  float e = NAME.x, foot = NAME.y + NAME.z * .36;
+  if (NAME.w <= 0. || y > foot + K) return;
+  vec2 m = texture(M, (vec2(x, y - e * NAME.z * 1.2) + .5) / G).rg;
+  float fog = S(vec2(c.x * .7 + T * .5, c.y * 1.2 - T * .3)) * .6 + S(vec2(c.x * 2.1 - T * .9, c.y * 2.6 + 40.)) * .4;
+  float vis = NAME.w * clamp((fog + .3 - e * 1.4) * 5., 0., 1.) * sm(foot + K * .5, foot - K * .5, y);
+  if (m.g * vis < .01) return;
+  float zn = F / max(foot / K - hz, .5) * .55, lit = max(BM.y, swept(vec2((c.x - cx) / F * zn, zn), 1.1));
+  col *= 1. - .88 * m.g * vis;
+  col = mix(col, mix(vec3(.4, .45, .53) * (.85 + .3 * fog), YEL * 1.35, lit), m.r * vis);
+  big = max(big, step(.6, lit * m.r * vis));
+  // spray across its foot
+  float burst = pow(max(0., sin(T * .9 + S(vec2(c.x * .12, 8.)) * 14.)), 2.), up = (foot - y) / NAME.z;
+  if (up > -.05 && up < .6 * burst && hash(vec2(x, y) + floor(T * 9.) * 7.) > .35 + up * 1.2) col = mix(col, vec3(.6, .65, .73) + YEL * lit * .6, .85 * NAME.w);
+}
+
+void rain() {
+  float amt = (.15 + .85 * storm) * (1. - moon), lane = floor(x - y * (.4 + .25 * storm)), h = hash(vec2(lane, 7.));
+  if (h >= amt * .22 * (1. - .8 * clr)) return;
+  float len = K * (14. + 16. * fract(h * 53.)), ph = fract(y / len - T * (1.2 + 1.5 * fract(h * 91.)) - h * 17.), k = sm(.3, 0., ph);
+  col = mix(col, vec3(.62, .68, .78) * (1. - .3 * night) * (.5 + .5 * k) + YEL * shine * 1.5, step(.01, k) * (.4 + .5 * k));
+}
+
+// gulls startled off the cliff by a click
+void bursts() {
+  for (int b = 0; b < 2; b++) {
+    vec4 q = BB[b];
+    if (q.w <= 0.) continue;
+    for (int k = 0; k < 6; k++) {
+      float fk = float(k) + q.z * 7., h1 = hash(vec2(fk, 3.)), h2 = hash(vec2(fk, 9.));
+      vec2 v = vec2(mix(-.4, 1.6, h1), -1.) * (11. + 8. * h2);
+      vec2 bp = c - q.xy / K - v * q.w - vec2(0., 2.5 * q.w * q.w);
+      if (abs(bp.x) > 2.5 || abs(bp.y) > 2.) continue;
+      if (wings(bp, vec2(1.6, -.8 * sin(T * 11. + fk * 2.) - .1)) < .65) {
+        col = mix(col, dot(col, vec3(.3, .5, .2)) > .4 ? vec3(.03, .035, .045) : vec3(.62, .66, .72), sm(3., 2.2, q.w));
+        big = 0.;
+      }
+    }
+  }
+}
+
+void main() {
+  begin();
+  F = min(Hr, Wr * .62) * .95; dusk = TOD.x; night = TOD.y; storm = TOD.z; moon = TOD.w; flash = BM.z;
+  lip0 = Hr - max(8., Hr * .13);
+  wB = max(4.5, max(F * .065, Wr * .09)); wT = wB * .6; lr = wT * .8;
+  LX = Wr < 130. ? wB * .5 : Wr * .11; LY = max(8., Hr * .11);
+  lamp = vec2(LX, LY);
+  Lw = vec3((LX - cx) / F, (hz - LY) / F, 1.) * .55;
+  float fd = mod(BM.x - atan(-Lw.x, -Lw.z) + PI * .5, PI) - PI * .5;
+  flare = exp(-fd * fd / .03);
+  moonc = Wr < 130. ? vec2(Wr * .4, Hr * .095) : vec2(Wr * .74, Hr * .12);
+  if (!lip() && !tower()) {
+    if (c.y < hz) heavens();
+    else sea();
+    float fog = exp(-abs(c.y - hz) / (Hr * .04)) * (.55 + .45 * S(vec2(c.x * .3 - T * .4, 11.)));
+    col = mix(col, sky(1.) * 1.08, fog * .7);
+    beam();
+    name();
+  }
+  rain();
+  bursts();
+  if (clr > 0.) col = mix(col, col * .34 + sky(1.) * .05, clr), big *= 1. - clr;
+  firefly();
+  col *= .9 + .2 * mix(hash(vec2(x, y) + floor(T * 8.) * vec2(17., 31.)), .5, clr); // film grain
+  encode();
+}`;
+
+// Dot pass: every screen pixel draws its cell's dot. The FADE build runs only while switching scenes: as X goes from 0 to 1,
+// each dot shrinks away at its own moment and grows back as the other scene's dot.
+const DOTS = `#version 300 es
+precision highp float;
+precision highp int;
+uniform highp sampler2D C, E;
+uniform float D, X;
+uniform vec3 BG[2];
+out vec4 o;
+void main() {
+  vec2 f = gl_FragCoord.xy / D, c = floor(f);
+  vec4 s = texelFetch(C, ivec2(c), 0);
+  vec3 bg = BG[0];
+  float k = 1.;
+#ifdef FADE
+  uvec2 q = uvec2(c) * uvec2(374761393u, 668265263u);
+  uint h = (q.x + q.y) ^ ((q.x + q.y) >> 13);
+  float th = float((h * 1274126177u) >> 8) / 16777216., p = clamp((X - .6 * th) / .4, 0., 1.);
+  if (p > .5) s = texelFetch(E, ivec2(c), 0);
+  k = abs(2. * p - 1.);
+  bg = mix(BG[0], BG[1], X);
+#endif
+  float r = (s.a < .125 ? 0. : s.a < .375 ? .13 : s.a < .625 ? .26 : s.a < .875 ? .42 : .53) * k;
+  float a = clamp((r - length(f - c - .5)) * D + .5, 0., 1.);
+  o = vec4(mix(bg, s.rgb, a), 1.);
+}`;
+
+// recent pointer and click events (fine cells, y down), packed into the shaders' uniform arrays every frame
+const trail = [], ripples = [], meteors = [], strikes = [], flocks = [];
+const TR = new Float32Array(64), RP = new Float32Array(16), MS = new Float32Array(12), BB = new Float32Array(8);
+const remember = (events, buf, e) => {
+  events.push(e);
+  if (events.length > buf.length / 4) events.shift();
+};
+const pack = (buf, events, life, now) => {
+  buf.fill(0);
+  events.forEach(([x, y, s, t0], j) => {
+    const age = (now - t0) / 1000;
+    if (age < life) buf.set([x, y, s, age], j * 4);
+  });
+};
+
+// The two scenes. keys: the look at each section (the last column is the horizon, a share of H); name: its width as a share of the
+// screen (wide, narrow screens) and its baseline as a share of the way from the horizon down to lip(); depth: how far the ground plane
+// reaches, for the trail and ripples; floor: the highest row a ripple lands on, a share of the way down from the horizon.
+const scenes = {
+  wheat: {
+    hues: [[.3, .37, 1], [.58, .6, 1], [.82, .7, 1], [1, .66, .78], [1, .7, .52], [1, .84, .62], [1, .95, .86], [1, .82, .44], [1, .7, .34], [1, .58, .26], [.9, .62, .86], [1, .42, .36], [.8, 1, .45], [.76, 1, .68], [.42, .92, .86], [.62, .86, 1]],
+    // time of day at each section: warm, night, sun glow, stars, sun height above the horizon (of H), horizon (of H)
+    keys: [[0, 0, 1, 0, .09, .62], [.7, .03, .85, 0, .025, .64], [.85, .24, .62, .18, -.008, .648], [1, .45, .4, .35, -.04, .655], [.4, 1, .05, 1, -.14, .67]],
+    fs: WHEAT, bg: [.043, .039, .071], name: [.7, .86, .2], lip: () => H, depth: () => H * .4, floor: .25, calm: 500,
+    set(u, [warm, night, glow, stars, sunH], HZ, now) {
+      const U = Math.min(H, W * .62) / K, bt = t % 50, n = this.nm;
+      pack(MS, meteors, 1.3, now);
+      gl.uniform3f(u.SUN, W * (.74 + .01 * P), HZ - H * sunH, Math.max(2.5, U * .03) * K);
+      gl.uniform4f(u.TOD, warm, night, glow, stars);
+      gl.uniform4f(u.NAME, n.depth * smooth(.02, .55, P), n.foot, n.cap, 1 - smooth(.15, .45, P));
+      gl.uniform3f(u.FL, (bt / 26 * (W / K + 30) - 15) * K, HZ - H * .14 + 2 * K * Math.sin(bt * .5), bt < 26 ? 1 - smooth(.1, .3, night) : 0);
+    },
+    click(x, y, f) {
+      if (!(f & 1)) return ripple(x, y);
+      const a = .3 + Math.random() * .35;
+      remember(meteors, MS, [x, y, Math.random() < .5 ? a : Math.PI - a, performance.now()]);
+      busy(1400);
+    },
+  },
+  lighthouse: {
+    hues: [[.78, .84, .92], [.62, .7, .82], [.5, .58, .72], [.4, .48, .64], [.3, .38, .56], [.22, .3, .5], [.66, .7, .74], [.52, .56, .6], [.4, .43, .47], [.34, .48, .56], [.26, .4, .5], [.56, .66, .8], [1, .86, .52], [1, .74, .36], [1, .95, .78], [.86, .9, 1]],
+    // weather at each section: dusk light, night, storm, moon, horizon (of H)
+    keys: [[1, .2, .3, 0, .44], [.55, .55, .5, 0, .45], [.35, .68, .75, 0, .455], [.15, .8, 1, 0, .46], [0, 1, .12, 1, .46]],
+    fs: CLIFF, bg: [.02, .024, .032], name: [.6, .76, .16], lip: () => H - Math.max(8 * K, H * .13), depth: () => .95 * Math.min(H, W * .62), floor: .12, calm: 3000,
+    set(u, [dusk, night, storm, moon], HZ, now) {
+      let flash = 0;
+      pack(MS, strikes, .5, now);
+      pack(BB, flocks, 3, now);
+      for (const [, , , t0] of strikes) {
+        const age = (now - t0) / 1000;
+        if (age < .5) flash = Math.max(flash, Math.exp(-age * 7) * (age < .07 || age > .13 && age < .22 ? 1 : .35));
+      }
+      const ph = t % 9.3;
+      if (!still.matches && storm > .6) flash = Math.max(flash, (ph < .09 ? 1 : ph > .17 && ph < .25 ? .6 : 0) * (storm - .6) / .4 * .7);
+      gl.uniform4f(u.TOD, dusk, night, storm, moon);
+      gl.uniform4f(u.NAME, smooth(.02, .9, P), this.nm.base, this.nm.cap, 1 - smooth(.8, 1, P));
+      // the beams' angle (0 = straight out to sea); a still frame catches the name just as the beam lights it
+      gl.uniform3f(u.BM, still.matches ? .1 : (t - 20) * OMEGA - .45, still.matches ? 1 : 0, flash);
+      gl.uniform4fv(u.BB, BB);
+    },
+    click(x, y, f) {
+      if (f & 1) remember(strikes, MS, [x, y, Math.random() * 64, performance.now()]), busy(700);
+      else if (f & 2) remember(flocks, BB, [x, y, Math.random() * 64 | 0, performance.now()]), busy(3000);
+      else ripple(x, y);
+    }
+  }
+};
+let scene = scenes[root.dataset.scene], fade = null;
+
+let dots, dissolve, tNoise;
+function program(fs) {
+  const p = gl.createProgram();
+  for (const [type, src] of [[gl.VERTEX_SHADER, VS], [gl.FRAGMENT_SHADER, fs]]) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    gl.attachShader(p, s);
+  }
+  gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+  const u = {};
+  for (let i = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS); i--;) {
+    const name = gl.getActiveUniform(p, i).name.replace("[0]", "");
+    u[name] = gl.getUniformLocation(p, name);
+  }
+  return { p, u };
+}
+function texture(target, filter, wrap) {
+  const t = gl.createTexture();
+  gl.bindTexture(target, t);
+  gl.texParameteri(target, gl.TEXTURE_MIN_FILTER, filter);
+  gl.texParameteri(target, gl.TEXTURE_MAG_FILTER, filter);
+  gl.texParameteri(target, gl.TEXTURE_WRAP_S, wrap);
+  gl.texParameteri(target, gl.TEXTURE_WRAP_T, wrap);
+  gl.texParameteri(target, gl.TEXTURE_WRAP_R, wrap);
+  return t;
+}
+function prepare(sc) {
+  if (sc.gl) return sc;
+  sc.lut ||= lutOf(sc.hues);
+  const lut = texture(gl.TEXTURE_3D, gl.NEAREST, gl.CLAMP_TO_EDGE);
+  gl.texImage3D(gl.TEXTURE_3D, 0, gl.RGBA8, 32, 32, 32, 0, gl.RGBA, gl.UNSIGNED_BYTE, sc.lut);
+  sc.gl = { prog: program(HEAD + sc.fs + TAIL), lut, name: texture(gl.TEXTURE_2D, gl.LINEAR, gl.CLAMP_TO_EDGE), tex: texture(gl.TEXTURE_2D, gl.NEAREST, gl.CLAMP_TO_EDGE), fbo: gl.createFramebuffer() };
+  if (W) size(sc);
+  return sc;
+}
+const fader = () => dissolve ||= program(DOTS.replace("\n", "\n#define FADE\n"));
+function init() {
+  W = 0;
+  dots = program(DOTS);
+  dissolve = null;
+  tNoise = texture(gl.TEXTURE_2D, gl.LINEAR, gl.REPEAT);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.R16F, 256, 256, 0, gl.RED, gl.FLOAT, noise);
+  for (const sc of Object.values(scenes)) sc.gl = null;
+  prepare(scene);
+}
+// build the hidden scene and the dissolve while idle, so switching is instant
+const idle = () => (window.requestIdleCallback || (f => setTimeout(f, 300)))(() => (Object.values(scenes).forEach(prepare), fader()), { timeout: 4000 });
+
+// The canvas covers the large viewport, so a phone's collapsing toolbar doesn't force a rebuild.
+const probe = document.createElement("div");
+probe.style.cssText = "position:fixed;top:0;width:0;height:100vh;height:100lvh;visibility:hidden;pointer-events:none";
+document.body.append(probe);
+let W = 0, H, D, cell, K, vw = 0, vh = 0, ratio = 0;
+function resize() {
+  const dpr = Math.min(devicePixelRatio || 1, 3), lvh = probe.offsetHeight || innerHeight;
+  if (W && innerWidth === vw && lvh === vh && dpr === ratio) return;
+  vw = innerWidth;
+  vh = lvh;
+  ratio = dpr;
+  D = Math.max(4, Math.round(dpr * Math.min(6, Math.max(2.4, vw / COLUMNS))));
+  cell = D / dpr;
+  K = Math.min(14, Math.max(4, vw / 200)) / cell;
+  W = Math.ceil(vw / cell);
+  H = Math.ceil(vh / cell);
+  cv.width = W * D;
+  cv.height = H * D;
+  cv.style.width = W * cell + "px";
+  cv.style.height = H * cell + "px";
+  for (const sc of Object.values(scenes)) if (sc.gl) size(sc);
+}
+function size(sc) {
+  gl.bindTexture(gl.TEXTURE_2D, sc.gl.tex);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, W, H, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, sc.gl.fbo);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, sc.gl.tex, 0);
+  paintName(sc);
+}
+
+// the name as a cell-sized mask (R) plus a soft halo (G), on two lines on a tall screen
+function paintName(sc) {
+  const [wide, slim, at] = sc.name, words = h1.textContent.trim().split(/\s+/), narrow = W < H * .9;
+  const lines = narrow && words.length > 1 ? words : [words.join(" ")];
+  const o = document.createElement("canvas");
+  o.width = W;
+  o.height = H;
+  const x = o.getContext("2d", { willReadFrequently: true }), fam = getComputedStyle(h1).fontFamily;
+  const setFont = px => {
+    x.font = `800 ${px}px ${fam}`;
+    if ("letterSpacing" in x) x.letterSpacing = -.03 * px + "px";
+  };
+  setFont(100);
+  const em = Math.max(...lines.map(l => x.measureText(l).width)) / 100;
+  const fs = Math.min(W * (narrow ? slim : wide) / em, H * (narrow ? .12 : .22)), hz = H * sc.keys[0].at(-1);
+  const base = Math.round(hz + (sc.lip() - hz) * at), cap = fs * .72;
+  setFont(fs);
+  const top = base - (lines.length - 1) * fs * .98 - x.measureText(lines[0]).actualBoundingBoxAscent;
+  const foot = base + x.measureText(lines.at(-1)).actualBoundingBoxDescent + 1;
+  sc.nm = { base, cap, foot, depth: foot - top + K };
+  x.textAlign = "center";
+  x.fillStyle = x.shadowColor = "#fff";
+  const draw = () => lines.forEach((l, i) => x.fillText(l, W / 2, base - (lines.length - 1 - i) * fs * .98));
+  x.shadowBlur = 3 * K;
+  draw();
+  const halo = x.getImageData(0, 0, W, H).data;
+  x.clearRect(0, 0, W, H);
+  x.shadowBlur = 0;
+  draw();
+  const fill = x.getImageData(0, 0, W, H).data, rg = new Uint8Array(W * H * 2);
+  for (let i = 0; i < W * H; i++) {
+    rg[i * 2] = fill[i * 4 + 3];
+    rg[i * 2 + 1] = halo[i * 4 + 3];
+  }
+  gl.bindTexture(gl.TEXTURE_2D, sc.gl.name);
+  gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RG8, W, H, 0, gl.RG, gl.UNSIGNED_BYTE, rg);
+}
+
+// scroll position as a section index (0 = hero, 1 = work, ...), reaching each integer when that section is centred
+let P = 0;
+function progress() {
+  const at = secs.map((s, i) => i ? s.offsetTop + (s.offsetHeight - innerHeight) / 2 : 0);
+  let i = 0;
+  while (i < at.length - 2 && scrollY > at[i + 1]) i++;
+  P = Math.max(0, Math.min(at.length - 1, i + (scrollY - at[i]) / Math.max(1, at[i + 1] - at[i])));
+  pastHero();
+}
+
+function ripple(x, y) {
+  remember(ripples, RP, [x, y, performance.now()]);
+  busy(scene.calm);
+}
+
+const fly = { x: 0, y: 0, a: 0, tx: 0, ty: 0, ta: 0 };
+const flying = () => mouse.matches && !still.matches;
+
+const blocks = [...document.querySelectorAll(".panel")], CL = new Float32Array(16);
+function clearings() {
+  CL.fill(0);
+  let j = 0;
+  for (const el of blocks) {
+    const r = el.getBoundingClientRect();
+    if (j < 16 && r.bottom > -40 && r.top < innerHeight + 40) CL.set([r.left / cell, r.top / cell, r.right / cell, r.bottom / cell], j), j += 4;
+  }
+}
+function render(sc, now) {
+  const k = sc.keys, i = Math.min(k.length - 2, Math.floor(P)), f = smooth(0, 1, P - i);
+  const v = k[i].map((a, j) => a + (k[i + 1][j] - a) * f), HZ = H * v.at(-1), deep = sc.depth();
+  const ground = (x, y) => {
+    const dy = Math.max(1, y - HZ + .5);
+    return [(x - W / 2) / dy, deep / dy];
+  };
+  TR.fill(0);
+  trail.forEach(([x, y, vx, v, t0], j) => {
+    const age = (now - t0) / 1000;
+    if (age < 2.4 && y > HZ + 1) TR.set([...ground(x, y), Math.max(-1, Math.min(1, vx * cell / 700)), Math.min(1, v * cell / 700) * (1 - age / 2.4) ** 2], j * 4);
+  });
+  RP.fill(0);
+  ripples.forEach(([x, y, t0], j) => {
+    const age = (now - t0) / 1000, [gx, gz] = ground(x, Math.max(y, HZ + (H - HZ) * sc.floor));
+    if (age < 3) RP.set([gx, gz, gz * .9 * age, (1 - age / 3) ** 2], j * 4);
+  });
+  const g = sc.gl, u = g.prog.u;
+  gl.bindFramebuffer(gl.FRAMEBUFFER, g.fbo);
+  gl.viewport(0, 0, W, H);
+  gl.useProgram(g.prog.p);
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, tNoise);
+  gl.activeTexture(gl.TEXTURE1);
+  gl.bindTexture(gl.TEXTURE_3D, g.lut);
+  gl.activeTexture(gl.TEXTURE2);
+  gl.bindTexture(gl.TEXTURE_2D, g.name);
+  gl.uniform1i(u.N, 0);
+  gl.uniform1i(u.L, 1);
+  gl.uniform1i(u.M, 2);
+  gl.uniform2f(u.G, W, H);
+  gl.uniform1f(u.K, K);
+  gl.uniform1f(u.T, t);
+  gl.uniform1f(u.HZ, HZ);
+  gl.uniform3f(u.CUR, fly.x, fly.y, fly.a);
+  gl.uniform4fv(u.TR, TR);
+  gl.uniform4fv(u.RP, RP);
+  gl.uniform4fv(u.CL, CL);
+  sc.set(u, v, HZ, now);
+  gl.uniform4fv(u.MS, MS);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+
+let drawn = 0;
+function draw(now) {
+  clearings();
+  const dt = Math.min(.1, Math.max(0, now - drawn) / 1000);
+  drawn = now;
+  const k = 1 - Math.exp(-dt * 16);
+  fly.x += (fly.tx - fly.x) * k;
+  fly.y += (fly.ty - fly.y) * k;
+  fly.a += (fly.ta - fly.a) * (1 - Math.exp(-dt * 8));
+  if (Math.abs(fly.tx - fly.x) + Math.abs(fly.ty - fly.y) > .3 || Math.abs(fly.ta - fly.a) > .01) busyUntil = Math.max(busyUntil, now + 60);
+
+  const from = fade ? fade.from : scene, X = fade ? smooth(0, 1, (now - fade.t0) / FADE) : 0, dp = fade ? dissolve : dots;
+  if (fade) render(from, now);
+  render(scene, now);
+  if (X >= 1) fade = null;
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.viewport(0, 0, cv.width, cv.height);
+  gl.useProgram(dp.p);
+  gl.activeTexture(gl.TEXTURE3);
+  gl.bindTexture(gl.TEXTURE_2D, from.gl.tex);
+  gl.activeTexture(gl.TEXTURE4);
+  gl.bindTexture(gl.TEXTURE_2D, scene.gl.tex);
+  gl.uniform1i(dp.u.C, 3);
+  gl.uniform1i(dp.u.E, 4);
+  gl.uniform1f(dp.u.D, D);
+  gl.uniform1f(dp.u.X, X);
+  gl.uniform3fv(dp.u.BG, [...from.bg, ...scene.bg]);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+
+// idle at IDLE_FPS; every frame while busy (scrolling, pointer, clicks, the dissolve)
+let raf = 0, last = 0, t = 20, busyUntil = 0, rt = 0;
+const tick = now => {
+  raf = requestAnimationFrame(tick);
+  if (now < busyUntil ? now - last < 4 : now - last < 1000 / IDLE_FPS - 2) return;
+  t += Math.min(now - last, 100) / 1000;
+  last = now;
+  draw(now);
+};
+const run = () => {
+  cancelAnimationFrame(raf);
+  root.classList.toggle("firefly", flying());
+  if (!flying()) fly.a = fly.ta = 0;
+  if (!still.matches) last = performance.now(), raf = requestAnimationFrame(tick);
+  else draw(performance.now());
+};
+const busy = ms => {
+  busyUntil = Math.max(busyUntil, performance.now() + ms);
+  if (still.matches) draw(performance.now());
+};
+const wake = () => busy(500);
+
+swap = id => {
+  const next = prepare(scenes[id]);
+  ripples.length = meteors.length = strikes.length = flocks.length = 0;
+  fade = still.matches ? null : (fader(), { from: scene, t0: performance.now() });
+  scene = next;
+  busy(FADE + 50);
+};
+
+addEventListener("scroll", () => (progress(), wake()), { passive: true });
+addEventListener("resize", () => {
+  clearTimeout(rt);
+  rt = setTimeout(() => (resize(), progress(), wake()), 120);
+});
+// Phones cancel pointer events once a drag turns into a scroll, so touchmove feeds the trail too.
+let lastPtr = null;
+const stir = (px, py) => {
+  if (still.matches) return;
+  const now = performance.now(), x = px / cell, y = py / cell;
+  if (!lastPtr || now - lastPtr[2] > 300) lastPtr = [x, y, now];
+  else if (Math.hypot(x - lastPtr[0], y - lastPtr[1]) > 5 * K && now - lastPtr[2] > 20) {
+    const dt = (now - lastPtr[2]) / 1000, vx = (x - lastPtr[0]) / dt, vy = (y - lastPtr[1]) / dt;
+    remember(trail, TR, [x, y, vx, Math.hypot(vx, vy), now]);
+    lastPtr = [x, y, now];
+    wake();
+  }
+};
+addEventListener("pointermove", e => {
+  stir(e.clientX, e.clientY);
+  if (e.pointerType !== "mouse" || !flying()) return;
+  fly.tx = e.clientX / cell;
+  fly.ty = e.clientY / cell;
+  if (fly.a < .02) fly.x = fly.tx, fly.y = fly.ty;
+  fly.ta = e.target.closest("nav, .panel, footer, a") ? 0 : 1;
+  busy(100);
+}, { passive: true });
+document.addEventListener("mouseout", e => e.relatedTarget || (fly.ta = 0, busy(100)));
+addEventListener("touchmove", e => stir(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+// the scene decides what a click does from the flags encode() left in the cell under it
+const px = new Uint8Array(4);
+document.addEventListener("click", e => {
+  if (still.matches || e.target.closest("a, nav, .panel")) return;
+  const x = e.clientX / cell, y = e.clientY / cell;
+  gl.bindFramebuffer(gl.FRAMEBUFFER, scene.gl.fbo);
+  gl.readPixels(Math.min(W - 1, x | 0), Math.max(0, H - 1 - (y | 0)), 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px);
+  scene.click(x, y, px[3] & 3);
+});
+cv.addEventListener("webglcontextlost", e => (e.preventDefault(), cancelAnimationFrame(raf), fade = null));
+cv.addEventListener("webglcontextrestored", () => (init(), resize(), run(), idle()));
+still.addEventListener("change", run);
+mouse.addEventListener("change", run);
+
+init();
+resize();
+progress();
+draw(performance.now());
+run();
+idle();
+})();
+</script>
+</body>
+</html>
